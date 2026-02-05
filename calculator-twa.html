@@ -1041,12 +1041,15 @@
             const total = positions.length;
             for (let num = 0; num <= total; num++) {
                 if (num === 0) {
-                    const cfg = new Array(total).fill(null);
-                    const se = [...enemyTeams].sort((a, b) => cp[b] - cp[a]);
-                    for (let i = 0; i < se.length && i < total; i++) cfg[i] = se[i];
+                    // Worst case: strongest enemy takes ALL positions
+                    const strongestEnemy = [...enemyTeams].sort((a, b) => cp[b] - cp[a])[0];
+                    const cfg = new Array(total).fill(strongestEnemy);
                     const { finalPoints, pointsPerMinute } = calculateFinalPoints(cfg, cp, minutesLeft, positions);
                     const diff = finalPoints[1] - Math.max(...enemyTeams.map(t => finalPoints[t] || 0));
-                    if (diff >= 1) wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: 0, hasMiddle: false, craneCount: 0, team1Positions: [] });
+                    if (diff >= 1) {
+                        wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: 0, hasMiddle: false, craneCount: 0, team1Positions: [] });
+                        return wins; // Already winning doing nothing — no need for other strategies
+                    }
                 } else {
                     (function gen(start, cur) {
                         if (cur.length === num) { tryPos([...cur]); return; }
