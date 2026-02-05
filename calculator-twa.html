@@ -231,7 +231,25 @@
         }
 
         .info-card .label { margin-bottom: 0; color: #5a6577; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-card .value { font-size: 15px; font-weight: 700; font-family: 'Menlo', 'Courier New', monospace; color: #00e5ff; }
+
+        .rate-input {
+            width: calc(3ch + 44px);
+            min-height: 36px;
+            padding: 6px 8px;
+            background: #111827;
+            border: 1px solid #2a3545;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Menlo', 'Courier New', monospace;
+            color: #00e5ff;
+            text-align: center;
+        }
+
+        .rate-input:focus {
+            outline: none;
+            border-color: #00e5ff;
+        }
 
         .optimize-btn {
             width: 100%;
@@ -382,7 +400,7 @@
                         </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value">6</div>
+                            <input type="number" id="rateMiddle" value="6" min="0" class="rate-input">
                         </div>
                     </div>
 
@@ -398,7 +416,7 @@
                         </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value">4</div>
+                            <input type="number" id="rateCrane1" value="4" min="0" class="rate-input">
                         </div>
                     </div>
 
@@ -414,7 +432,7 @@
                         </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value">4</div>
+                            <input type="number" id="rateCrane2" value="4" min="0" class="rate-input">
                         </div>
                     </div>
 
@@ -430,7 +448,7 @@
                         </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value">4</div>
+                            <input type="number" id="rateCrane3" value="4" min="0" class="rate-input">
                         </div>
                     </div>
 
@@ -446,7 +464,7 @@
                         </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value">4</div>
+                            <input type="number" id="rateCrane4" value="4" min="0" class="rate-input">
                         </div>
                     </div>
                 </div>
@@ -769,8 +787,18 @@
         });
 
         // ==================== Constants & Elements ====================
-        const TOWER_MIDDLE_RATE = 6;
-        const CRANE_RATE = 4;
+        function getMiddleRate() { return parseInt(document.getElementById('rateMiddle').value) || 0; }
+        function getCraneRate(n) { return parseInt(document.getElementById(`rateCrane${n}`).value) || 0; }
+        function getTotalRate() {
+            let total = getMiddleRate();
+            const count = getActiveCranesCount();
+            for (let i = 1; i <= count; i++) total += getCraneRate(i);
+            return total;
+        }
+        function getPositionRate(pos) {
+            if (pos === 'middle') return getMiddleRate();
+            return getCraneRate(parseInt(pos.replace('crane', '')));
+        }
 
         const pointsInputs = {
             1: document.getElementById('points1'),
@@ -844,6 +872,11 @@
             select.addEventListener('change', calculate);
         });
 
+        document.querySelectorAll('.rate-input').forEach(input => {
+            input.addEventListener('change', calculate);
+            input.addEventListener('input', calculate);
+        });
+
         setInterval(updateTimer, 1000);
 
         // ==================== Timer ====================
@@ -881,11 +914,11 @@
             }
 
             const middleTeam = towerSelects.middle.value;
-            if (middleTeam) pointsPerMinute[middleTeam] += TOWER_MIDDLE_RATE;
+            if (middleTeam) pointsPerMinute[middleTeam] += getMiddleRate();
 
             [1,2,3,4].forEach(n => {
                 const team = towerSelects[`crane${n}`].value;
-                if (team) pointsPerMinute[team] += CRANE_RATE;
+                if (team) pointsPerMinute[team] += getCraneRate(n);
             });
 
             const teamCount = getActiveTeamsCount();
@@ -912,8 +945,9 @@
 
             if (teamCount < 2) { verdictDiv.innerHTML = ''; return; }
 
-            const activeCranes = getActiveCranesCount();
-            const totalRate = TOWER_MIDDLE_RATE + CRANE_RATE * activeCranes;
+            const totalRate = getTotalRate();
+            const middleRate = getMiddleRate();
+            const maxCraneRate = Math.max(...Array.from({length: getActiveCranesCount()}, (_, i) => getCraneRate(i + 1)), 0);
             const T = totalRate * minutesLeft;
             const neededExact = (Pmax + T - P1) / 2;
             const neededPoints = Math.floor(neededExact) + 1;
@@ -931,9 +965,9 @@
                 const minRate = (neededPoints / minutesLeft).toFixed(1);
                 let hint;
                 const mr = neededPoints / minutesLeft;
-                if (mr <= CRANE_RATE) hint = L.hintCrane(CRANE_RATE);
-                else if (mr <= TOWER_MIDDLE_RATE) hint = L.hintCenter(CRANE_RATE, TOWER_MIDDLE_RATE);
-                else if (mr <= TOWER_MIDDLE_RATE + CRANE_RATE && activeCranes >= 1) hint = L.hintCenterCrane(TOWER_MIDDLE_RATE + CRANE_RATE);
+                if (mr <= maxCraneRate) hint = L.hintCrane(maxCraneRate);
+                else if (mr <= middleRate) hint = L.hintCenter(maxCraneRate, middleRate);
+                else if (mr <= middleRate + maxCraneRate && getActiveCranesCount() >= 1) hint = L.hintCenterCrane(middleRate + maxCraneRate);
                 else hint = L.hintMulti(minRate);
                 verdictDiv.innerHTML = `<div class="verdict need-action">${L.needCapture(Nf, Tf, pct, minRate, hint)}</div>`;
             }
@@ -955,7 +989,7 @@
             const ppm = { 1:0, 2:0, 3:0, 4:0, 5:0 };
             for (let i = 0; i < positions.length; i++) {
                 const team = config[i];
-                if (team) ppm[team] += positions[i] === 'middle' ? TOWER_MIDDLE_RATE : CRANE_RATE;
+                if (team) ppm[team] += getPositionRate(positions[i]);
             }
             const fp = {};
             for (let team = 1; team <= 5; team++) {
@@ -976,7 +1010,7 @@
             const positions = ['middle'];
             for (let i = 1; i <= activeCranes; i++) positions.push(`crane${i}`);
             const rates = {};
-            positions.forEach(p => { rates[p] = p === 'middle' ? TOWER_MIDDLE_RATE : CRANE_RATE; });
+            positions.forEach(p => { rates[p] = getPositionRate(p); });
 
             const wins = [];
 
@@ -1055,7 +1089,7 @@
             const rec = document.getElementById('recommendation');
 
             if (!strategies || strategies.length === 0) {
-                const T = Math.floor((TOWER_MIDDLE_RATE + CRANE_RATE * getActiveCranesCount()) * getTimeLeftMinutes()).toLocaleString();
+                const T = Math.floor(getTotalRate() * getTimeLeftMinutes()).toLocaleString();
                 rec.innerHTML = `<div style="background:rgba(255,55,95,0.08);border-left:3px solid #ff375f;padding:15px;border-radius:4px;border:1px solid rgba(255,55,95,0.2);">${L.noWin(T)}</div>`;
                 return;
             }
