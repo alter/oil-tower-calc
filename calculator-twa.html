@@ -232,27 +232,6 @@
 
         .info-card .label { margin-bottom: 0; color: #5a6577; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .rate-input {
-            width: calc(4ch + 66px);
-            min-height: 44px;
-            padding: 10px;
-            background: #0a0e17;
-            border: 1px solid #00e5ff;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Menlo', 'Courier New', monospace;
-            color: #00e5ff;
-            text-align: center;
-            -webkit-appearance: none;
-            -moz-appearance: textfield;
-        }
-
-        .rate-input:focus {
-            outline: none;
-            border-color: #00e5ff;
-            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
-        }
 
         .optimize-btn {
             width: 100%;
@@ -392,7 +371,7 @@
                 </div>
                 <div class="tower-config">
                     <div class="tower-item">
-                        <h4 data-i18n="centerTower">🎯 Центральная башня</h4>
+                        <h4 data-i18n="centerTower">🛢️ Бочки</h4>
                         <div class="team-select">
                             <label data-i18n="teamSelectLabel">Команда</label>
                             <select id="middle" class="team-option-select">
@@ -402,8 +381,15 @@
                             </select>
                         </div>
                         <div class="team-select">
-                            <label data-i18n="ptsPerMin">Очков в минуту</label>
-                            <input type="number" id="rateMiddle" value="2" min="0" class="rate-input">
+                            <label data-i18n="countLabel">Кол-во</label>
+                            <select id="barrelsCount" class="cranes-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value" id="rateMiddleDisplay">2</div>
                         </div>
                     </div>
 
@@ -418,8 +404,15 @@
                             </select>
                         </div>
                         <div class="team-select">
-                            <label data-i18n="ptsPerMin">Очков в минуту</label>
-                            <input type="number" id="rateCrane1" value="1" min="0" class="rate-input">
+                            <label data-i18n="countLabel">Кол-во</label>
+                            <select id="craneLevel1" class="cranes-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value" id="rateCrane1Display">1</div>
                         </div>
                     </div>
 
@@ -434,8 +427,15 @@
                             </select>
                         </div>
                         <div class="team-select">
-                            <label data-i18n="ptsPerMin">Очков в минуту</label>
-                            <input type="number" id="rateCrane2" value="1" min="0" class="rate-input">
+                            <label data-i18n="countLabel">Кол-во</label>
+                            <select id="craneLevel2" class="cranes-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value" id="rateCrane2Display">1</div>
                         </div>
                     </div>
 
@@ -450,8 +450,15 @@
                             </select>
                         </div>
                         <div class="team-select">
-                            <label data-i18n="ptsPerMin">Очков в минуту</label>
-                            <input type="number" id="rateCrane3" value="1" min="0" class="rate-input">
+                            <label data-i18n="countLabel">Кол-во</label>
+                            <select id="craneLevel3" class="cranes-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value" id="rateCrane3Display">1</div>
                         </div>
                     </div>
 
@@ -466,8 +473,15 @@
                             </select>
                         </div>
                         <div class="team-select">
-                            <label data-i18n="ptsPerMin">Очков в минуту</label>
-                            <input type="number" id="rateCrane4" value="1" min="0" class="rate-input">
+                            <label data-i18n="countLabel">Кол-во</label>
+                            <select id="craneLevel4" class="cranes-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value" id="rateCrane4Display">1</div>
                         </div>
                     </div>
                 </div>
@@ -521,9 +535,10 @@
                 team4Label: 'Команда 4',
                 team5Label: 'Команда 5',
                 cranesCountLabel: 'Количество кранов:',
-                centerTower: '🎯 Центральная башня',
+                centerTower: '🛢️ Бочки',
                 crane: 'Кран',
                 teamSelectLabel: 'Команда',
+                countLabel: 'Кол-во',
                 ptsPerMin: 'Очков в минуту',
                 clickToFind: 'Нажми кнопку для поиска оптимальной стратегии',
                 findStrategy: '🔍 Найти стратегию',
@@ -531,7 +546,7 @@
                 emptyOption: '-- Пусто --',
                 teamN: 'Команда',
                 myTeam: 'Моя команда',
-                center: 'Центр',
+                center: 'Бочки',
                 craneN: 'Кран',
                 current: 'сейчас',
                 min: 'мин',
@@ -542,16 +557,16 @@
                 impossible: (T, need, deficit) => `❌ Победа невозможна. На башне осталось ${T} очков, а для гарантированной победы нужно забрать ${need}.<div style="font-size:14px;margin-top:8px;">Не хватает ${deficit} очков — неоткуда взять.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Для победы нужно захватить <strong>${need}</strong> из ${T} оставшихся очков (${pct}%), потому что остальное заберёт соперник<div style="font-size:14px;margin-top:8px;">Минимальная скорость: <strong>${rate}/мин</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Хватит одного крана (${r}/мин)`,
-                hintCenter: (cr, mr) => `Нужен минимум центр (${mr}/мин), одного крана (${cr}/мин) мало`,
-                hintCenterCrane: (r) => `Нужен центр + кран (${r}/мин)`,
+                hintCenter: (cr, mr) => `Нужны минимум бочки (${mr}/мин), одного крана (${cr}/мин) мало`,
+                hintCenterCrane: (r) => `Нужны бочки + кран (${r}/мин)`,
                 hintMulti: (r) => `Нужно ${r}/мин — несколько позиций`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ ПОБЕДА НЕВОЗМОЖНА</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Даже если захватить все точки — всего можно набрать ${T} очков. Этого не хватит.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Не тратьте попытки на эту башню.</div>`,
                 winsTitle: '📍 Варианты для победы',
                 stratDoNothing: '😎 Ничего не делай — уже победишь!',
-                stratCenter: '🎯 Достаточно держать <strong>ЦЕНТР</strong>',
+                stratCenter: '🎯 Достаточно держать <strong>БОЧКИ</strong>',
                 stratOneCrane: '🏗️ Достаточно держать <strong>ОДИН КРАН</strong>',
-                stratCranes: (n) => `🏗️ Держи <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong> — центр не нужен`,
-                stratCenterCranes: (n) => `🎯 Держи <strong>ЦЕНТР</strong> и <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong>`,
+                stratCranes: (n) => `🏗️ Держи <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong> — бочки не нужны`,
+                stratCenterCranes: (n) => `🎯 Держи <strong>БОЧКИ</strong> и <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong>`,
                 noPositions: 'нет позиций',
                 enemies: 'Враги',
             },
@@ -567,9 +582,10 @@
                 team4Label: 'Team 4',
                 team5Label: 'Team 5',
                 cranesCountLabel: 'Number of cranes:',
-                centerTower: '🎯 Center Tower',
+                centerTower: '🛢️ Barrels',
                 crane: 'Crane',
                 teamSelectLabel: 'Team',
+                countLabel: 'Count',
                 ptsPerMin: 'Points per minute',
                 clickToFind: 'Click button to find optimal strategy',
                 findStrategy: '🔍 Find Strategy',
@@ -577,7 +593,7 @@
                 emptyOption: '-- Empty --',
                 teamN: 'Team',
                 myTeam: 'My Team',
-                center: 'Center',
+                center: 'Barrels',
                 craneN: 'Crane',
                 current: 'current',
                 min: 'min',
@@ -588,16 +604,16 @@
                 impossible: (T, need, deficit) => `❌ Victory impossible. Tower has ${T} points left, but you need ${need} to guarantee a win.<div style="font-size:14px;margin-top:8px;">Short by ${deficit} points — nowhere to get them.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ To win, capture <strong>${need}</strong> of ${T} remaining points (${pct}%) — the rest will go to the opponent<div style="font-size:14px;margin-top:8px;">Minimum rate: <strong>${rate}/min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `One crane is enough (${r}/min)`,
-                hintCenter: (cr, mr) => `Need at least center (${mr}/min), one crane (${cr}/min) not enough`,
-                hintCenterCrane: (r) => `Need center + crane (${r}/min)`,
+                hintCenter: (cr, mr) => `Need at least barrels (${mr}/min), one crane (${cr}/min) not enough`,
+                hintCenterCrane: (r) => `Need barrels + crane (${r}/min)`,
                 hintMulti: (r) => `Need ${r}/min — multiple positions`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORY IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Even capturing all points — only ${T} available. Not enough to overtake.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Don't waste attempts on this tower.</div>`,
                 winsTitle: '📍 Winning Options',
                 stratDoNothing: '😎 Do nothing — already winning!',
-                stratCenter: '🎯 Just hold <strong>CENTER</strong>',
+                stratCenter: '🎯 Just hold <strong>BARRELS</strong>',
                 stratOneCrane: '🏗️ Just hold <strong>ONE CRANE</strong>',
-                stratCranes: (n) => `🏗️ Hold <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong> — center not needed`,
-                stratCenterCranes: (n) => `🎯 Hold <strong>CENTER</strong> and <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong>`,
+                stratCranes: (n) => `🏗️ Hold <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong> — barrels not needed`,
+                stratCenterCranes: (n) => `🎯 Hold <strong>BARRELS</strong> and <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'no positions',
                 enemies: 'Enemies',
             },
@@ -613,9 +629,10 @@
                 team4Label: 'Team 4',
                 team5Label: 'Team 5',
                 cranesCountLabel: 'Anzahl der Kräne:',
-                centerTower: '🎯 Zentralturm',
+                centerTower: '🛢️ Fässer',
                 crane: 'Kran',
                 teamSelectLabel: 'Team',
+                countLabel: 'Anzahl',
                 ptsPerMin: 'Punkte pro Minute',
                 clickToFind: 'Klicke, um die optimale Strategie zu finden',
                 findStrategy: '🔍 Strategie finden',
@@ -623,7 +640,7 @@
                 emptyOption: '-- Leer --',
                 teamN: 'Team',
                 myTeam: 'Mein Team',
-                center: 'Zentrum',
+                center: 'Fässer',
                 craneN: 'Kran',
                 current: 'aktuell',
                 min: 'Min',
@@ -634,16 +651,16 @@
                 impossible: (T, need, deficit) => `❌ Sieg unmöglich. Auf dem Turm bleiben ${T} Punkte, aber du brauchst ${need} für einen garantierten Sieg.<div style="font-size:14px;margin-top:8px;">Es fehlen ${deficit} Punkte — unerreichbar.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Zum Sieg musst du <strong>${need}</strong> von ${T} verbleibenden Punkten erobern (${pct}%) — den Rest nimmt der Gegner<div style="font-size:14px;margin-top:8px;">Mindestrate: <strong>${rate}/Min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Ein Kran reicht (${r}/Min)`,
-                hintCenter: (cr, mr) => `Mindestens Zentrum nötig (${mr}/Min), ein Kran (${cr}/Min) reicht nicht`,
-                hintCenterCrane: (r) => `Zentrum + Kran nötig (${r}/Min)`,
+                hintCenter: (cr, mr) => `Mindestens Fässer nötig (${mr}/Min), ein Kran (${cr}/Min) reicht nicht`,
+                hintCenterCrane: (r) => `Fässer + Kran nötig (${r}/Min)`,
                 hintMulti: (r) => `${r}/Min nötig — mehrere Positionen`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ SIEG UNMÖGLICH</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Selbst bei Eroberung aller Punkte — nur ${T} verfügbar. Nicht genug.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Verschwende keine Versuche an diesem Turm.</div>`,
                 winsTitle: '📍 Siegoptionen',
                 stratDoNothing: '😎 Nichts tun — du gewinnst bereits!',
-                stratCenter: '🎯 Es reicht, das <strong>ZENTRUM</strong> zu halten',
+                stratCenter: '🎯 Es reicht, die <strong>FÄSSER</strong> zu halten',
                 stratOneCrane: '🏗️ Es reicht, <strong>EINEN KRAN</strong> zu halten',
-                stratCranes: (n) => `🏗️ Halte <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong> — Zentrum nicht nötig`,
-                stratCenterCranes: (n) => `🎯 Halte <strong>ZENTRUM</strong> und <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong>`,
+                stratCranes: (n) => `🏗️ Halte <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong> — Fässer nicht nötig`,
+                stratCenterCranes: (n) => `🎯 Halte <strong>FÄSSER</strong> und <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong>`,
                 noPositions: 'keine Positionen',
                 enemies: 'Gegner',
             },
@@ -659,9 +676,10 @@
                 team4Label: 'Équipe 4',
                 team5Label: 'Équipe 5',
                 cranesCountLabel: 'Nombre de grues :',
-                centerTower: '🎯 Tour centrale',
+                centerTower: '🛢️ Barils',
                 crane: 'Grue',
                 teamSelectLabel: 'Équipe',
+                countLabel: 'Quantité',
                 ptsPerMin: 'Points par minute',
                 clickToFind: 'Cliquez pour trouver la stratégie optimale',
                 findStrategy: '🔍 Trouver une stratégie',
@@ -669,7 +687,7 @@
                 emptyOption: '-- Vide --',
                 teamN: 'Équipe',
                 myTeam: 'Mon équipe',
-                center: 'Centre',
+                center: 'Barils',
                 craneN: 'Grue',
                 current: 'actuel',
                 min: 'min',
@@ -680,16 +698,16 @@
                 impossible: (T, need, deficit) => `❌ Victoire impossible. Il reste ${T} points sur la tour, mais il en faut ${need} pour garantir la victoire.<div style="font-size:14px;margin-top:8px;">Il manque ${deficit} points — impossible à obtenir.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Pour gagner, capturez <strong>${need}</strong> des ${T} points restants (${pct}%) — le reste ira à l'adversaire<div style="font-size:14px;margin-top:8px;">Débit minimum : <strong>${rate}/min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Une grue suffit (${r}/min)`,
-                hintCenter: (cr, mr) => `Le centre est nécessaire (${mr}/min), une grue (${cr}/min) ne suffit pas`,
-                hintCenterCrane: (r) => `Centre + grue nécessaire (${r}/min)`,
+                hintCenter: (cr, mr) => `Les barils sont nécessaires (${mr}/min), une grue (${cr}/min) ne suffit pas`,
+                hintCenterCrane: (r) => `Barils + grue nécessaire (${r}/min)`,
                 hintMulti: (r) => `${r}/min nécessaire — plusieurs positions`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTOIRE IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Même en capturant tous les points — seulement ${T} disponibles. Pas assez.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Ne gaspillez pas vos tentatives sur cette tour.</div>`,
                 winsTitle: '📍 Options de victoire',
                 stratDoNothing: '😎 Ne rien faire — vous gagnez déjà !',
-                stratCenter: '🎯 Il suffit de tenir le <strong>CENTRE</strong>',
+                stratCenter: '🎯 Il suffit de tenir les <strong>BARILS</strong>',
                 stratOneCrane: '🏗️ Il suffit de tenir <strong>UNE GRUE</strong>',
-                stratCranes: (n) => `🏗️ Tenez <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong> — centre pas nécessaire`,
-                stratCenterCranes: (n) => `🎯 Tenez le <strong>CENTRE</strong> et <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong>`,
+                stratCranes: (n) => `🏗️ Tenez <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong> — barils pas nécessaires`,
+                stratCenterCranes: (n) => `🎯 Tenez les <strong>BARILS</strong> et <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'aucune position',
                 enemies: 'Ennemis',
             },
@@ -705,9 +723,10 @@
                 team4Label: 'Equipo 4',
                 team5Label: 'Equipo 5',
                 cranesCountLabel: 'Número de grúas:',
-                centerTower: '🎯 Torre central',
+                centerTower: '🛢️ Barriles',
                 crane: 'Grúa',
                 teamSelectLabel: 'Equipo',
+                countLabel: 'Cantidad',
                 ptsPerMin: 'Puntos por minuto',
                 clickToFind: 'Pulsa para encontrar la estrategia óptima',
                 findStrategy: '🔍 Buscar estrategia',
@@ -715,7 +734,7 @@
                 emptyOption: '-- Vacío --',
                 teamN: 'Equipo',
                 myTeam: 'Mi equipo',
-                center: 'Centro',
+                center: 'Barriles',
                 craneN: 'Grúa',
                 current: 'actual',
                 min: 'min',
@@ -726,16 +745,16 @@
                 impossible: (T, need, deficit) => `❌ Victoria imposible. Quedan ${T} puntos en la torre, pero necesitas ${need} para ganar.<div style="font-size:14px;margin-top:8px;">Faltan ${deficit} puntos — no hay de dónde sacarlos.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Para ganar, captura <strong>${need}</strong> de ${T} puntos restantes (${pct}%) — el resto lo tomará el rival<div style="font-size:14px;margin-top:8px;">Velocidad mínima: <strong>${rate}/min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Una grúa es suficiente (${r}/min)`,
-                hintCenter: (cr, mr) => `Se necesita el centro (${mr}/min), una grúa (${cr}/min) no basta`,
-                hintCenterCrane: (r) => `Se necesita centro + grúa (${r}/min)`,
+                hintCenter: (cr, mr) => `Se necesitan los barriles (${mr}/min), una grúa (${cr}/min) no basta`,
+                hintCenterCrane: (r) => `Se necesitan barriles + grúa (${r}/min)`,
                 hintMulti: (r) => `Se necesita ${r}/min — varias posiciones`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORIA IMPOSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Incluso capturando todo — solo ${T} puntos disponibles. No es suficiente.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">No gastes intentos en esta torre.</div>`,
                 winsTitle: '📍 Opciones de victoria',
                 stratDoNothing: '😎 ¡No hagas nada — ya estás ganando!',
-                stratCenter: '🎯 Basta con mantener el <strong>CENTRO</strong>',
+                stratCenter: '🎯 Basta con mantener los <strong>BARRILES</strong>',
                 stratOneCrane: '🏗️ Basta con mantener <strong>UNA GRÚA</strong>',
-                stratCranes: (n) => `🏗️ Mantén <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong> — centro no necesario`,
-                stratCenterCranes: (n) => `🎯 Mantén el <strong>CENTRO</strong> y <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong>`,
+                stratCranes: (n) => `🏗️ Mantén <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong> — barriles no necesarios`,
+                stratCenterCranes: (n) => `🎯 Mantén los <strong>BARRILES</strong> y <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'sin posiciones',
                 enemies: 'Enemigos',
             }
@@ -790,8 +809,10 @@
         });
 
         // ==================== Constants & Elements ====================
-        function getMiddleRate() { return parseInt(document.getElementById('rateMiddle').value) || 0; }
-        function getCraneRate(n) { return parseInt(document.getElementById(`rateCrane${n}`).value) || 0; }
+        const BARREL_PTS = 2;
+        const CRANE_PTS = 1;
+        function getMiddleRate() { return (parseInt(document.getElementById('barrelsCount').value) || 1) * BARREL_PTS; }
+        function getCraneRate(n) { return (parseInt(document.getElementById(`craneLevel${n}`).value) || 1) * CRANE_PTS; }
         function getTotalRate() {
             let total = getMiddleRate();
             const count = getActiveCranesCount();
@@ -875,10 +896,17 @@
             select.addEventListener('change', calculate);
         });
 
-        document.querySelectorAll('.rate-input').forEach(input => {
-            input.addEventListener('change', calculate);
-            input.addEventListener('input', calculate);
-        });
+        function updateRateDisplays() {
+            document.getElementById('rateMiddleDisplay').textContent = getMiddleRate();
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`rateCrane${i}Display`).textContent = getCraneRate(i);
+            }
+        }
+
+        document.getElementById('barrelsCount').addEventListener('change', () => { updateRateDisplays(); calculate(); });
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById(`craneLevel${i}`).addEventListener('change', () => { updateRateDisplays(); calculate(); });
+        }
 
         setInterval(updateTimer, 1000);
 
