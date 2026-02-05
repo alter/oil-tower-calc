@@ -361,6 +361,13 @@
             <div class="section">
                 <h2 data-i18n="sectionTower">🏗️ Конфигурация башни</h2>
                 <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: #8892a4; font-size: 13px; margin-right: 10px; text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="barrelsCountLabel">Количество бочек:</label>
+                    <select id="barrelsCount" class="cranes-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
                     <label style="font-weight: 600; color: #8892a4; font-size: 13px; margin-right: 10px; text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="cranesCountLabel">Количество кранов:</label>
                     <select id="cranesCount" class="cranes-select">
                         <option value="1">1</option>
@@ -370,26 +377,35 @@
                     </select>
                 </div>
                 <div class="tower-config">
-                    <div class="tower-item">
-                        <h4 data-i18n="centerTower">🛢️ Бочки</h4>
+                    <div class="tower-item" id="barrelItem1">
+                        <h4>🛢️ <span data-i18n="barrel">Бочка</span> 1</h4>
                         <div class="team-select">
                             <label data-i18n="teamSelectLabel">Команда</label>
-                            <select id="middle" class="team-option-select">
+                            <select id="barrel1" class="team-option-select">
                                 <option value="">-- Пусто --</option>
                                 <option value="1">Моя команда</option>
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value">2</div>
+                        </div>
+                    </div>
+
+                    <div class="tower-item" id="barrelItem2" style="display:none;">
+                        <h4>🛢️ <span data-i18n="barrel">Бочка</span> 2</h4>
                         <div class="team-select">
-                            <label data-i18n="countLabel">Кол-во</label>
-                            <select id="barrelsCount" class="cranes-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <label data-i18n="teamSelectLabel">Команда</label>
+                            <select id="barrel2" class="team-option-select">
+                                <option value="">-- Пусто --</option>
+                                <option value="1">Моя команда</option>
+                                <option value="2">Команда 2</option>
                             </select>
                         </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value" id="rateMiddleDisplay">2</div>
+                            <div class="value">2</div>
                         </div>
                     </div>
 
@@ -403,16 +419,9 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="team-select">
-                            <label data-i18n="countLabel">Кол-во</label>
-                            <select id="craneLevel1" class="cranes-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value" id="rateCrane1Display">1</div>
+                            <div class="value">1</div>
                         </div>
                     </div>
 
@@ -426,16 +435,9 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="team-select">
-                            <label data-i18n="countLabel">Кол-во</label>
-                            <select id="craneLevel2" class="cranes-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value" id="rateCrane2Display">1</div>
+                            <div class="value">1</div>
                         </div>
                     </div>
 
@@ -449,16 +451,9 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="team-select">
-                            <label data-i18n="countLabel">Кол-во</label>
-                            <select id="craneLevel3" class="cranes-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value" id="rateCrane3Display">1</div>
+                            <div class="value">1</div>
                         </div>
                     </div>
 
@@ -472,16 +467,9 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="team-select">
-                            <label data-i18n="countLabel">Кол-во</label>
-                            <select id="craneLevel4" class="cranes-select">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
                         <div class="info-card">
                             <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
-                            <div class="value" id="rateCrane4Display">1</div>
+                            <div class="value">1</div>
                         </div>
                     </div>
                 </div>
@@ -534,11 +522,11 @@
                 team3Label: 'Команда 3',
                 team4Label: 'Команда 4',
                 team5Label: 'Команда 5',
+                barrelsCountLabel: 'Количество бочек:',
                 cranesCountLabel: 'Количество кранов:',
-                centerTower: '🛢️ Бочки',
+                barrel: 'Бочка',
                 crane: 'Кран',
                 teamSelectLabel: 'Команда',
-                countLabel: 'Кол-во',
                 ptsPerMin: 'Очков в минуту',
                 clickToFind: 'Нажми кнопку для поиска оптимальной стратегии',
                 findStrategy: '🔍 Найти стратегию',
@@ -563,10 +551,10 @@
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ ПОБЕДА НЕВОЗМОЖНА</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Даже если захватить все точки — всего можно набрать ${T} очков. Этого не хватит.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Не тратьте попытки на эту башню.</div>`,
                 winsTitle: '📍 Варианты для победы',
                 stratDoNothing: '😎 Ничего не делай — уже победишь!',
-                stratCenter: '🎯 Достаточно держать <strong>БОЧКИ</strong>',
+                stratBarrels: (n) => `🎯 Достаточно держать <strong>${n} ${n === 1 ? 'БОЧКУ' : 'БОЧКИ'}</strong>`,
                 stratOneCrane: '🏗️ Достаточно держать <strong>ОДИН КРАН</strong>',
                 stratCranes: (n) => `🏗️ Держи <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong> — бочки не нужны`,
-                stratCenterCranes: (n) => `🎯 Держи <strong>БОЧКИ</strong> и <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong>`,
+                stratBarrelsCranes: (b, c) => `🎯 Держи <strong>${b} ${b === 1 ? 'БОЧКУ' : 'БОЧКИ'}</strong> и <strong>${c} ${c === 1 ? 'КРАН' : 'КРАНА'}</strong>`,
                 noPositions: 'нет позиций',
                 enemies: 'Враги',
             },
@@ -581,11 +569,11 @@
                 team3Label: 'Team 3',
                 team4Label: 'Team 4',
                 team5Label: 'Team 5',
+                barrelsCountLabel: 'Number of barrels:',
                 cranesCountLabel: 'Number of cranes:',
-                centerTower: '🛢️ Barrels',
+                barrel: 'Barrel',
                 crane: 'Crane',
                 teamSelectLabel: 'Team',
-                countLabel: 'Count',
                 ptsPerMin: 'Points per minute',
                 clickToFind: 'Click button to find optimal strategy',
                 findStrategy: '🔍 Find Strategy',
@@ -610,10 +598,10 @@
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORY IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Even capturing all points — only ${T} available. Not enough to overtake.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Don't waste attempts on this tower.</div>`,
                 winsTitle: '📍 Winning Options',
                 stratDoNothing: '😎 Do nothing — already winning!',
-                stratCenter: '🎯 Just hold <strong>BARRELS</strong>',
+                stratBarrels: (n) => `🎯 Just hold <strong>${n} BARREL${n > 1 ? 'S' : ''}</strong>`,
                 stratOneCrane: '🏗️ Just hold <strong>ONE CRANE</strong>',
                 stratCranes: (n) => `🏗️ Hold <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong> — barrels not needed`,
-                stratCenterCranes: (n) => `🎯 Hold <strong>BARRELS</strong> and <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong>`,
+                stratBarrelsCranes: (b, c) => `🎯 Hold <strong>${b} BARREL${b > 1 ? 'S' : ''}</strong> and <strong>${c} CRANE${c > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'no positions',
                 enemies: 'Enemies',
             },
@@ -628,11 +616,11 @@
                 team3Label: 'Team 3',
                 team4Label: 'Team 4',
                 team5Label: 'Team 5',
+                barrelsCountLabel: 'Anzahl der Fässer:',
                 cranesCountLabel: 'Anzahl der Kräne:',
-                centerTower: '🛢️ Fässer',
+                barrel: 'Fass',
                 crane: 'Kran',
                 teamSelectLabel: 'Team',
-                countLabel: 'Anzahl',
                 ptsPerMin: 'Punkte pro Minute',
                 clickToFind: 'Klicke, um die optimale Strategie zu finden',
                 findStrategy: '🔍 Strategie finden',
@@ -657,10 +645,10 @@
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ SIEG UNMÖGLICH</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Selbst bei Eroberung aller Punkte — nur ${T} verfügbar. Nicht genug.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Verschwende keine Versuche an diesem Turm.</div>`,
                 winsTitle: '📍 Siegoptionen',
                 stratDoNothing: '😎 Nichts tun — du gewinnst bereits!',
-                stratCenter: '🎯 Es reicht, die <strong>FÄSSER</strong> zu halten',
+                stratBarrels: (n) => `🎯 Es reicht, <strong>${n} FASS${n > 1 ? 'ER' : ''}</strong> zu halten`,
                 stratOneCrane: '🏗️ Es reicht, <strong>EINEN KRAN</strong> zu halten',
                 stratCranes: (n) => `🏗️ Halte <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong> — Fässer nicht nötig`,
-                stratCenterCranes: (n) => `🎯 Halte <strong>FÄSSER</strong> und <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong>`,
+                stratBarrelsCranes: (b, c) => `🎯 Halte <strong>${b} FASS${b > 1 ? 'ER' : ''}</strong> und <strong>${c} KRAN${c > 1 ? 'E' : ''}</strong>`,
                 noPositions: 'keine Positionen',
                 enemies: 'Gegner',
             },
@@ -675,11 +663,11 @@
                 team3Label: 'Équipe 3',
                 team4Label: 'Équipe 4',
                 team5Label: 'Équipe 5',
+                barrelsCountLabel: 'Nombre de barils :',
                 cranesCountLabel: 'Nombre de grues :',
-                centerTower: '🛢️ Barils',
+                barrel: 'Baril',
                 crane: 'Grue',
                 teamSelectLabel: 'Équipe',
-                countLabel: 'Quantité',
                 ptsPerMin: 'Points par minute',
                 clickToFind: 'Cliquez pour trouver la stratégie optimale',
                 findStrategy: '🔍 Trouver une stratégie',
@@ -704,10 +692,10 @@
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTOIRE IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Même en capturant tous les points — seulement ${T} disponibles. Pas assez.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Ne gaspillez pas vos tentatives sur cette tour.</div>`,
                 winsTitle: '📍 Options de victoire',
                 stratDoNothing: '😎 Ne rien faire — vous gagnez déjà !',
-                stratCenter: '🎯 Il suffit de tenir les <strong>BARILS</strong>',
+                stratBarrels: (n) => `🎯 Il suffit de tenir <strong>${n} BARIL${n > 1 ? 'S' : ''}</strong>`,
                 stratOneCrane: '🏗️ Il suffit de tenir <strong>UNE GRUE</strong>',
                 stratCranes: (n) => `🏗️ Tenez <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong> — barils pas nécessaires`,
-                stratCenterCranes: (n) => `🎯 Tenez les <strong>BARILS</strong> et <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong>`,
+                stratBarrelsCranes: (b, c) => `🎯 Tenez <strong>${b} BARIL${b > 1 ? 'S' : ''}</strong> et <strong>${c} GRUE${c > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'aucune position',
                 enemies: 'Ennemis',
             },
@@ -722,11 +710,11 @@
                 team3Label: 'Equipo 3',
                 team4Label: 'Equipo 4',
                 team5Label: 'Equipo 5',
+                barrelsCountLabel: 'Número de barriles:',
                 cranesCountLabel: 'Número de grúas:',
-                centerTower: '🛢️ Barriles',
+                barrel: 'Barril',
                 crane: 'Grúa',
                 teamSelectLabel: 'Equipo',
-                countLabel: 'Cantidad',
                 ptsPerMin: 'Puntos por minuto',
                 clickToFind: 'Pulsa para encontrar la estrategia óptima',
                 findStrategy: '🔍 Buscar estrategia',
@@ -751,10 +739,10 @@
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORIA IMPOSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Incluso capturando todo — solo ${T} puntos disponibles. No es suficiente.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">No gastes intentos en esta torre.</div>`,
                 winsTitle: '📍 Opciones de victoria',
                 stratDoNothing: '😎 ¡No hagas nada — ya estás ganando!',
-                stratCenter: '🎯 Basta con mantener los <strong>BARRILES</strong>',
+                stratBarrels: (n) => `🎯 Basta con mantener <strong>${n} BARRIL${n > 1 ? 'ES' : ''}</strong>`,
                 stratOneCrane: '🏗️ Basta con mantener <strong>UNA GRÚA</strong>',
                 stratCranes: (n) => `🏗️ Mantén <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong> — barriles no necesarios`,
-                stratCenterCranes: (n) => `🎯 Mantén los <strong>BARRILES</strong> y <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong>`,
+                stratBarrelsCranes: (b, c) => `🎯 Mantén <strong>${b} BARRIL${b > 1 ? 'ES' : ''}</strong> y <strong>${c} GRÚA${c > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'sin posiciones',
                 enemies: 'Enemigos',
             }
@@ -811,17 +799,28 @@
         // ==================== Constants & Elements ====================
         const BARREL_PTS = 2;
         const CRANE_PTS = 1;
-        function getMiddleRate() { return (parseInt(document.getElementById('barrelsCount').value) || 1) * BARREL_PTS; }
-        function getCraneRate(n) { return (parseInt(document.getElementById(`craneLevel${n}`).value) || 1) * CRANE_PTS; }
-        function getTotalRate() {
-            let total = getMiddleRate();
-            const count = getActiveCranesCount();
-            for (let i = 1; i <= count; i++) total += getCraneRate(i);
-            return total;
+
+        function getActiveBarrelsCount() {
+            return parseInt(document.getElementById('barrelsCount').value) || 1;
         }
+
         function getPositionRate(pos) {
-            if (pos === 'middle') return getMiddleRate();
-            return getCraneRate(parseInt(pos.replace('crane', '')));
+            return pos.startsWith('barrel') ? BARREL_PTS : CRANE_PTS;
+        }
+
+        function getPositions() {
+            const positions = [];
+            const bc = getActiveBarrelsCount();
+            for (let i = 1; i <= bc; i++) positions.push('barrel' + i);
+            const cc = getActiveCranesCount();
+            for (let i = 1; i <= cc; i++) positions.push('crane' + i);
+            return positions;
+        }
+
+        function getMiddleRate() { return getActiveBarrelsCount() * BARREL_PTS; }
+        function getCraneRate(n) { return CRANE_PTS; }
+        function getTotalRate() {
+            return getPositions().reduce((sum, pos) => sum + getPositionRate(pos), 0);
         }
 
         const pointsInputs = {
@@ -833,7 +832,8 @@
         };
 
         const towerSelects = {
-            middle: document.getElementById('middle'),
+            barrel1: document.getElementById('barrel1'),
+            barrel2: document.getElementById('barrel2'),
             crane1: document.getElementById('crane1'),
             crane2: document.getElementById('crane2'),
             crane3: document.getElementById('crane3'),
@@ -864,6 +864,23 @@
 
         teamsCountSelect.addEventListener('change', updateTeamVisibility);
 
+        const barrelsCountSelect = document.getElementById('barrelsCount');
+        const barrelItems = {
+            1: document.getElementById('barrelItem1'),
+            2: document.getElementById('barrelItem2')
+        };
+
+        function updateBarrelVisibility() {
+            const count = getActiveBarrelsCount();
+            for (let i = 1; i <= 2; i++) {
+                barrelItems[i].style.display = i <= count ? '' : 'none';
+                if (i > count) towerSelects['barrel' + i].value = '';
+            }
+            calculate();
+        }
+
+        barrelsCountSelect.addEventListener('change', updateBarrelVisibility);
+
         const cranesCountSelect = document.getElementById('cranesCount');
         const craneItems = {
             1: document.getElementById('craneItem1'),
@@ -880,7 +897,7 @@
             const count = getActiveCranesCount();
             for (let i = 1; i <= 4; i++) {
                 craneItems[i].style.display = i <= count ? '' : 'none';
-                if (i > count) towerSelects[`crane${i}`].value = '';
+                if (i > count) towerSelects['crane' + i].value = '';
             }
             calculate();
         }
@@ -895,18 +912,6 @@
         Object.values(towerSelects).forEach(select => {
             select.addEventListener('change', calculate);
         });
-
-        function updateRateDisplays() {
-            document.getElementById('rateMiddleDisplay').textContent = getMiddleRate();
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`rateCrane${i}Display`).textContent = getCraneRate(i);
-            }
-        }
-
-        document.getElementById('barrelsCount').addEventListener('change', () => { updateRateDisplays(); calculate(); });
-        for (let i = 1; i <= 4; i++) {
-            document.getElementById(`craneLevel${i}`).addEventListener('change', () => { updateRateDisplays(); calculate(); });
-        }
 
         setInterval(updateTimer, 1000);
 
@@ -944,20 +949,16 @@
                 pointsPerMinute[i] = 0;
             }
 
-            const middleTeam = towerSelects.middle.value;
-            if (middleTeam) pointsPerMinute[middleTeam] += getMiddleRate();
-
-            [1,2,3,4].forEach(n => {
-                const team = towerSelects[`crane${n}`].value;
-                if (team) pointsPerMinute[team] += getCraneRate(n);
+            const positions = getPositions();
+            positions.forEach(pos => {
+                const team = towerSelects[pos] ? towerSelects[pos].value : '';
+                if (team) pointsPerMinute[team] += getPositionRate(pos);
             });
 
             const teamCount = getActiveTeamsCount();
             const finalPoints = {};
-            const activeTeams = [];
             for (let team = 1; team <= teamCount; team++) {
                 finalPoints[team] = currentPoints[team] + pointsPerMinute[team] * minutesLeft;
-                activeTeams.push(team);
             }
 
             checkVictory(currentPoints, minutesLeft);
@@ -977,8 +978,8 @@
             if (teamCount < 2) { verdictDiv.innerHTML = ''; return; }
 
             const totalRate = getTotalRate();
-            const middleRate = getMiddleRate();
-            const maxCraneRate = Math.max(...Array.from({length: getActiveCranesCount()}, (_, i) => getCraneRate(i + 1)), 0);
+            const singleBarrelRate = BARREL_PTS;
+            const singleCraneRate = CRANE_PTS;
             const T = totalRate * minutesLeft;
             const neededExact = (Pmax + T - P1) / 2;
             const neededPoints = Math.floor(neededExact) + 1;
@@ -996,9 +997,9 @@
                 const minRate = (neededPoints / minutesLeft).toFixed(1);
                 let hint;
                 const mr = neededPoints / minutesLeft;
-                if (mr <= maxCraneRate) hint = L.hintCrane(maxCraneRate);
-                else if (mr <= middleRate) hint = L.hintCenter(maxCraneRate, middleRate);
-                else if (mr <= middleRate + maxCraneRate && getActiveCranesCount() >= 1) hint = L.hintCenterCrane(middleRate + maxCraneRate);
+                if (mr <= singleCraneRate) hint = L.hintCrane(singleCraneRate);
+                else if (mr <= singleBarrelRate) hint = L.hintCenter(singleCraneRate, singleBarrelRate);
+                else if (mr <= singleBarrelRate + singleCraneRate) hint = L.hintCenterCrane(singleBarrelRate + singleCraneRate);
                 else hint = L.hintMulti(minRate);
                 verdictDiv.innerHTML = `<div class="verdict need-action">${L.needCapture(Nf, Tf, pct, minRate, hint)}</div>`;
             }
@@ -1037,11 +1038,7 @@
             const enemyTeams = [];
             for (let t = 2; t <= teamCount; t++) enemyTeams.push(t);
 
-            const activeCranes = getActiveCranesCount();
-            const positions = ['middle'];
-            for (let i = 1; i <= activeCranes; i++) positions.push(`crane${i}`);
-            const rates = {};
-            positions.forEach(p => { rates[p] = getPositionRate(p); });
+            const positions = getPositions();
 
             const wins = [];
 
@@ -1058,9 +1055,9 @@
                 const maxOpp = Math.max(...enemyTeams.map(t => finalPoints[t] || 0));
                 const diff = t1f - maxOpp;
                 if (diff >= 1) {
-                    const hasMiddle = t1pos.includes(0);
-                    const craneCount = t1pos.length - (hasMiddle ? 1 : 0);
-                    wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: t1pos.length, hasMiddle, craneCount, team1Positions: t1pos });
+                    const barrelCount = t1pos.filter(i => positions[i].startsWith('barrel')).length;
+                    const craneCount = t1pos.filter(i => positions[i].startsWith('crane')).length;
+                    wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: t1pos.length, barrelCount, craneCount, team1Positions: t1pos });
                 }
             }
 
@@ -1073,7 +1070,7 @@
                     const { finalPoints, pointsPerMinute } = calculateFinalPoints(cfg, cp, minutesLeft, positions);
                     const diff = finalPoints[1] - Math.max(...enemyTeams.map(t => finalPoints[t] || 0));
                     if (diff >= 1) {
-                        wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: 0, hasMiddle: false, craneCount: 0, team1Positions: [] });
+                        wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: 0, barrelCount: 0, craneCount: 0, team1Positions: [] });
                         return wins; // Already winning doing nothing — no need for other strategies
                     }
                 } else {
@@ -1086,14 +1083,14 @@
 
             const seen = new Set();
             const unique = wins.filter(s => {
-                const key = `${s.hasMiddle?1:0}_${s.craneCount}`;
+                const key = `${s.barrelCount}_${s.craneCount}`;
                 if (seen.has(key)) return false;
                 seen.add(key); return true;
             });
 
             unique.sort((a, b) => {
                 if (a.positionsUsed !== b.positionsUsed) return a.positionsUsed - b.positionsUsed;
-                if (a.hasMiddle !== b.hasMiddle) return a.hasMiddle ? 1 : -1;
+                if (a.barrelCount !== b.barrelCount) return a.barrelCount - b.barrelCount;
                 return b.difference - a.difference;
             });
 
@@ -1107,13 +1104,15 @@
 
         function getStrategyDescription(s) {
             if (s.positionsUsed === 0) return L.stratDoNothing;
-            if (s.positionsUsed === 1) return s.hasMiddle ? L.stratCenter : L.stratOneCrane;
-            if (!s.hasMiddle) return L.stratCranes(s.craneCount);
-            return L.stratCenterCranes(s.craneCount);
+            if (s.barrelCount > 0 && s.craneCount === 0) return L.stratBarrels(s.barrelCount);
+            if (s.barrelCount === 0 && s.craneCount === 1) return L.stratOneCrane;
+            if (s.barrelCount === 0) return L.stratCranes(s.craneCount);
+            return L.stratBarrelsCranes(s.barrelCount, s.craneCount);
         }
 
-        function posName(p) {
-            return p === 'middle' ? t('center') : `${t('craneN')} ${p.replace('crane','')}`;
+        function posName(pos) {
+            if (pos.startsWith('barrel')) return t('barrel') + ' ' + pos.replace('barrel', '');
+            return t('craneN') + ' ' + pos.replace('crane', '');
         }
 
         // ==================== Show Recommendation ====================
@@ -1194,6 +1193,7 @@
         // ==================== Init ====================
         setLang(detectedLang);
         updateTeamVisibility();
+        updateBarrelVisibility();
         updateCraneVisibility();
         updateTimer();
         calculate();
