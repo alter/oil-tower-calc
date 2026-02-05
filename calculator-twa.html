@@ -233,22 +233,25 @@
         .info-card .label { margin-bottom: 0; color: #5a6577; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .rate-input {
-            width: calc(3ch + 44px);
-            min-height: 36px;
-            padding: 6px 8px;
-            background: #111827;
-            border: 1px solid #2a3545;
-            border-radius: 4px;
+            width: calc(4ch + 66px);
+            min-height: 44px;
+            padding: 10px;
+            background: #0a0e17;
+            border: 1px solid #00e5ff;
+            border-radius: 6px;
             font-size: 16px;
             font-weight: 700;
             font-family: 'Menlo', 'Courier New', monospace;
             color: #00e5ff;
             text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
         }
 
         .rate-input:focus {
             outline: none;
             border-color: #00e5ff;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
         }
 
         .optimize-btn {
@@ -398,8 +401,8 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="info-card">
-                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                        <div class="team-select">
+                            <label data-i18n="ptsPerMin">Очков в минуту</label>
                             <input type="number" id="rateMiddle" value="6" min="0" class="rate-input">
                         </div>
                     </div>
@@ -414,8 +417,8 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="info-card">
-                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                        <div class="team-select">
+                            <label data-i18n="ptsPerMin">Очков в минуту</label>
                             <input type="number" id="rateCrane1" value="4" min="0" class="rate-input">
                         </div>
                     </div>
@@ -430,8 +433,8 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="info-card">
-                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                        <div class="team-select">
+                            <label data-i18n="ptsPerMin">Очков в минуту</label>
                             <input type="number" id="rateCrane2" value="4" min="0" class="rate-input">
                         </div>
                     </div>
@@ -446,8 +449,8 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="info-card">
-                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                        <div class="team-select">
+                            <label data-i18n="ptsPerMin">Очков в минуту</label>
                             <input type="number" id="rateCrane3" value="4" min="0" class="rate-input">
                         </div>
                     </div>
@@ -462,8 +465,8 @@
                                 <option value="2">Команда 2</option>
                             </select>
                         </div>
-                        <div class="info-card">
-                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                        <div class="team-select">
+                            <label data-i18n="ptsPerMin">Очков в минуту</label>
                             <input type="number" id="rateCrane4" value="4" min="0" class="rate-input">
                         </div>
                     </div>
