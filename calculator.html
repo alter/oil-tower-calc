@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil Clash Calculator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', -apple-system, sans-serif;
+            background: #0a0e17;
+            color: #c8d6e5;
+            min-height: 100vh;
+            padding: 20px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #111827;
+            border-radius: 8px;
+            border: 1px solid #1e2a3a;
+            box-shadow: 0 0 40px rgba(0, 200, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #0f1923 0%, #111827 100%);
+            border-bottom: 2px solid #00e5ff;
+            color: #e0e0e0;
+            padding: 25px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .timer {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 8px;
+            font-family: 'Menlo', 'Courier New', monospace;
+            color: #00e5ff;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            padding: 4px 10px;
+            background: transparent;
+            border: 1px solid #2a3545;
+            border-radius: 3px;
+            color: #5a6577;
+            font-family: -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            border-color: #00e5ff;
+            color: #00e5ff;
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .content { padding: 25px; }
+
+        .section { margin-bottom: 30px; }
+
+        .section h2 {
+            color: #00e5ff;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1e2a3a;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .input-block { display: flex; flex-direction: column; }
+
+        .input-block label {
+            font-weight: 600;
+            color: #8892a4;
+            margin-bottom: 6px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-block input, .input-block select {
+            padding: 10px 12px;
+            background: #0a0e17;
+            border: 1px solid #2a3545;
+            border-radius: 4px;
+            font-size: 15px;
+            font-family: 'Menlo', 'Courier New', monospace;
+            color: #e0e0e0;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-block input:focus, .input-block select:focus {
+            outline: none;
+            border-color: #00e5ff;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.15);
+        }
+
+        .tower-config {
+            background: #0d1320;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #1e2a3a;
+        }
+
+        .tower-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 10px;
+            padding: 12px;
+            background: #111827;
+            border-radius: 4px;
+            border-left: 3px solid #00e5ff;
+        }
+
+        .tower-item:last-child { margin-bottom: 0; }
+
+        .tower-item h4 {
+            color: #00e5ff;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            grid-column: 1 / -1;
+            margin-bottom: 4px;
+        }
+
+        .team-select { display: flex; flex-direction: column; }
+
+        .team-select label {
+            font-weight: 600;
+            color: #8892a4;
+            margin-bottom: 6px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .team-select select {
+            padding: 8px 10px;
+            background: #0a0e17;
+            border: 1px solid #2a3545;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: -apple-system, sans-serif;
+            color: #e0e0e0;
+        }
+
+        .team-select select:focus { outline: none; border-color: #00e5ff; }
+
+        .verdict {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .verdict.win { background: rgba(0,255,136,0.1); border: 1px solid #00ff88; color: #00ff88; }
+        .verdict.lose { background: rgba(255,55,95,0.1); border: 1px solid #ff375f; color: #ff375f; }
+        .verdict.need-action { background: rgba(255,170,0,0.1); border: 1px solid #ffaa00; color: #ffaa00; }
+
+        .info-card {
+            background: #0a0e17;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid #2a3545;
+        }
+
+        .info-card .label { color: #5a6577; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-card .value { font-size: 18px; font-weight: 700; font-family: 'Menlo', 'Courier New', monospace; color: #00e5ff; }
+
+        .optimize-btn {
+            padding: 10px 24px;
+            background: transparent;
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: -apple-system, sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .optimize-btn:hover {
+            background: rgba(0,229,255,0.1);
+            box-shadow: 0 0 15px rgba(0,229,255,0.2);
+        }
+
+        .cranes-select {
+            padding: 8px 10px;
+            background: #0a0e17;
+            border: 1px solid #2a3545;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #e0e0e0;
+            font-family: 'Menlo', 'Courier New', monospace;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            .container { border-radius: 0; border-left: none; border-right: none; }
+            .content {
+                padding: 16px;
+                padding-left: calc(16px + env(safe-area-inset-left));
+                padding-right: calc(16px + env(safe-area-inset-right));
+            }
+            .section { margin-bottom: 20px; }
+            .section h2 { font-size: 15px; margin-bottom: 10px; padding-bottom: 6px; }
+
+            /* Header: lang buttons above title */
+            .header {
+                padding: 12px 15px 15px;
+                padding-top: calc(12px + env(safe-area-inset-top));
+            }
+            .header h1 { font-size: 18px; letter-spacing: 1px; margin-top: 4px; }
+            .timer { font-size: 22px; margin-top: 4px; }
+            .lang-switch {
+                position: static;
+                justify-content: center;
+                margin-bottom: 8px;
+            }
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+                min-height: 32px;
+            }
+
+            /* Points: 2 columns, compact */
+            .form-group { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+            .input-block label { font-size: 12px; margin-bottom: 4px; }
+            /* 16px minimum prevents Safari iOS auto-zoom on focus */
+            .input-block input, .input-block select {
+                padding: 10px;
+                font-size: 16px;
+                min-height: 44px;
+                border-radius: 6px;
+            }
+
+            /* Tower: single column, compact items */
+            .tower-config { padding: 10px; }
+            .tower-item {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                padding: 10px;
+                margin-bottom: 8px;
+            }
+            .tower-item h4 { font-size: 12px; margin-bottom: 2px; }
+            .info-card {
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+            }
+            .info-card .label { margin-bottom: 0; font-size: 10px; }
+            .info-card .value { font-size: 15px; }
+            .team-select select {
+                padding: 10px;
+                font-size: 16px;
+                min-height: 44px;
+                border-radius: 6px;
+            }
+            .team-select label { font-size: 11px; margin-bottom: 4px; }
+
+            /* Selectors row compact */
+            .cranes-select {
+                padding: 8px 10px;
+                font-size: 16px;
+                min-height: 44px;
+                border-radius: 6px;
+            }
+
+            /* Verdict compact */
+            .verdict { padding: 14px; font-size: 14px; margin-top: 12px; line-height: 1.5; }
+
+            /* Optimize button full width, touch-friendly */
+            .optimize-btn {
+                width: 100%;
+                padding: 14px;
+                font-size: 16px;
+                min-height: 48px;
+                border-radius: 6px;
+            }
+        }
+
+        /* iPhone 13 / 14 / 15 and similar (viewport <= 414px) */
+        @media (max-width: 414px) {
+            .form-group { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .header h1 { font-size: 17px; }
+            .timer { font-size: 20px; }
+
+            .tower-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 374px) {
+            .form-group { grid-template-columns: 1fr; }
+            .header h1 { font-size: 15px; }
+            .timer { font-size: 18px; }
+            .lang-btn { padding: 5px 8px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="ru">RU</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="de">DE</button>
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="es">ES</button>
+            </div>
+            <h1 data-i18n="title">Битва за нефть — Калькулятор</h1>
+            <div class="timer" id="timer">00:00:00</div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2 data-i18n="sectionPoints">📊 Текущие очки команд</h2>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: #8892a4; font-size: 13px; margin-right: 10px; text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="teamsCountLabel">Количество команд:</label>
+                    <select id="teamsCount" class="cranes-select">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="input-block" style="border-left: 3px solid #00ff88; padding-left: 10px;">
+                        <label data-i18n="team1Label" style="color: #00ff88;">Моя команда</label>
+                        <input type="number" id="points1" value="0" min="0" style="border-color: #00ff88;">
+                    </div>
+                    <div class="input-block" id="teamBlock2">
+                        <label data-i18n="team2Label">Команда 2</label>
+                        <input type="number" id="points2" value="0" min="0">
+                    </div>
+                    <div class="input-block" id="teamBlock3">
+                        <label data-i18n="team3Label">Команда 3</label>
+                        <input type="number" id="points3" value="0" min="0">
+                    </div>
+                    <div class="input-block" id="teamBlock4">
+                        <label data-i18n="team4Label">Команда 4</label>
+                        <input type="number" id="points4" value="0" min="0">
+                    </div>
+                    <div class="input-block" id="teamBlock5">
+                        <label data-i18n="team5Label">Команда 5</label>
+                        <input type="number" id="points5" value="0" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 data-i18n="sectionTower">🏗️ Конфигурация башни</h2>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: #8892a4; font-size: 13px; margin-right: 10px; text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="cranesCountLabel">Количество кранов:</label>
+                    <select id="cranesCount" class="cranes-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="tower-config">
+                    <div class="tower-item">
+                        <h4 data-i18n="centerTower">🎯 Центральная башня</h4>
+                        <div class="team-select">
+                            <label data-i18n="teamSelectLabel">Команда</label>
+                            <select id="middle" class="team-option-select">
+                                <option value="">-- Пусто --</option>
+                                <option value="1">Моя команда</option>
+                                <option value="2">Команда 2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value">6</div>
+                        </div>
+                    </div>
+
+                    <div class="tower-item" id="craneItem1">
+                        <h4>🏗️ <span data-i18n="crane">Кран</span> 1</h4>
+                        <div class="team-select">
+                            <label data-i18n="teamSelectLabel">Команда</label>
+                            <select id="crane1" class="team-option-select">
+                                <option value="">-- Пусто --</option>
+                                <option value="1">Моя команда</option>
+                                <option value="2">Команда 2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value">4</div>
+                        </div>
+                    </div>
+
+                    <div class="tower-item" id="craneItem2">
+                        <h4>🏗️ <span data-i18n="crane">Кран</span> 2</h4>
+                        <div class="team-select">
+                            <label data-i18n="teamSelectLabel">Команда</label>
+                            <select id="crane2" class="team-option-select">
+                                <option value="">-- Пусто --</option>
+                                <option value="1">Моя команда</option>
+                                <option value="2">Команда 2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value">4</div>
+                        </div>
+                    </div>
+
+                    <div class="tower-item" id="craneItem3">
+                        <h4>🏗️ <span data-i18n="crane">Кран</span> 3</h4>
+                        <div class="team-select">
+                            <label data-i18n="teamSelectLabel">Команда</label>
+                            <select id="crane3" class="team-option-select">
+                                <option value="">-- Пусто --</option>
+                                <option value="1">Моя команда</option>
+                                <option value="2">Команда 2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value">4</div>
+                        </div>
+                    </div>
+
+                    <div class="tower-item" id="craneItem4">
+                        <h4>🏗️ <span data-i18n="crane">Кран</span> 4</h4>
+                        <div class="team-select">
+                            <label data-i18n="teamSelectLabel">Команда</label>
+                            <select id="crane4" class="team-option-select">
+                                <option value="">-- Пусто --</option>
+                                <option value="1">Моя команда</option>
+                                <option value="2">Команда 2</option>
+                            </select>
+                        </div>
+                        <div class="info-card">
+                            <div class="label" data-i18n="ptsPerMin">Очков в минуту</div>
+                            <div class="value">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 data-i18n="sectionForecast">📈 Прогноз на конец дня (UTC)</h2>
+                <button id="optimizeBtn" class="optimize-btn" data-i18n="findStrategy">🔍 Найти стратегию</button>
+                <div id="recommendation" style="background: #0d1320; border-radius: 6px; padding: 16px; border-left: 3px solid #00e5ff; margin-bottom: 15px; margin-top: 15px; border: 1px solid #1e2a3a;">
+                    <p style="color: #5a6577; margin: 0; font-size: 14px;" data-i18n="clickToFind">Нажми кнопку для поиска оптимальной стратегии</p>
+                </div>
+                <div id="verdict"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== i18n ====================
+        const LANGS = {
+            ru: {
+                title: 'Битва за нефть — Калькулятор',
+                sectionPoints: '📊 Текущие очки команд',
+                sectionTower: '🏗️ Конфигурация башни',
+                sectionRecommendation: '💡 Рекомендация',
+                sectionForecast: '📈 Прогноз на конец дня (UTC)',
+                team1Label: 'Моя команда',
+                team2Label: 'Команда 2',
+                team3Label: 'Команда 3',
+                team4Label: 'Команда 4',
+                team5Label: 'Команда 5',
+                cranesCountLabel: 'Количество кранов:',
+                centerTower: '🎯 Центральная башня',
+                crane: 'Кран',
+                teamSelectLabel: 'Команда',
+                ptsPerMin: 'Очков в минуту',
+                clickToFind: 'Нажми кнопку для поиска оптимальной стратегии',
+                findStrategy: '🔍 Найти стратегию',
+                searching: '⏳ Ищу...',
+                emptyOption: '-- Пусто --',
+                teamN: 'Команда',
+                myTeam: 'Моя команда',
+                center: 'Центр',
+                craneN: 'Кран',
+                current: 'сейчас',
+                min: 'мин',
+                pts: 'очков',
+                teamsCountLabel: 'Количество команд:',
+                noActive: 'Нет активных команд',
+                alreadyWin: (T) => `✅ Уже побеждаешь! Даже если соперник заберёт все ${T} оставшихся очков — ты всё равно впереди.`,
+                impossible: (T, need, deficit) => `❌ Победа невозможна. На башне осталось ${T} очков, а для гарантированной победы нужно забрать ${need}.<div style="font-size:14px;margin-top:8px;">Не хватает ${deficit} очков — неоткуда взять.</div>`,
+                needCapture: (need, T, pct, rate, hint) => `⚠️ Для победы нужно захватить <strong>${need}</strong> из ${T} оставшихся очков (${pct}%), потому что остальное заберёт соперник<div style="font-size:14px;margin-top:8px;">Минимальная скорость: <strong>${rate}/мин</strong> → ${hint}</div>`,
+                hintCrane: (r) => `Хватит одного крана (${r}/мин)`,
+                hintCenter: (cr, mr) => `Нужен минимум центр (${mr}/мин), одного крана (${cr}/мин) мало`,
+                hintCenterCrane: (r) => `Нужен центр + кран (${r}/мин)`,
+                hintMulti: (r) => `Нужно ${r}/мин — несколько позиций`,
+                noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ ПОБЕДА НЕВОЗМОЖНА</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Даже если захватить все точки — всего можно набрать ${T} очков. Этого не хватит.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Не тратьте попытки на эту башню.</div>`,
+                winsTitle: '📍 Варианты для победы',
+                stratDoNothing: '😎 Ничего не делай — уже победишь!',
+                stratCenter: '🎯 Достаточно держать <strong>ЦЕНТР</strong>',
+                stratOneCrane: '🏗️ Достаточно держать <strong>ОДИН КРАН</strong>',
+                stratCranes: (n) => `🏗️ Держи <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong> — центр не нужен`,
+                stratCenterCranes: (n) => `🎯 Держи <strong>ЦЕНТР</strong> и <strong>${n} ${n === 1 ? 'КРАН' : 'КРАНА'}</strong>`,
+                noPositions: 'нет позиций',
+                enemies: 'Враги',
+            },
+            en: {
+                title: 'Oil Clash — Calculator',
+                sectionPoints: '📊 Current Team Points',
+                sectionTower: '🏗️ Tower Configuration',
+                sectionRecommendation: '💡 Recommendation',
+                sectionForecast: '📈 End of Day Forecast (UTC)',
+                team1Label: 'My Team',
+                team2Label: 'Team 2',
+                team3Label: 'Team 3',
+                team4Label: 'Team 4',
+                team5Label: 'Team 5',
+                cranesCountLabel: 'Number of cranes:',
+                centerTower: '🎯 Center Tower',
+                crane: 'Crane',
+                teamSelectLabel: 'Team',
+                ptsPerMin: 'Points per minute',
+                clickToFind: 'Click button to find optimal strategy',
+                findStrategy: '🔍 Find Strategy',
+                searching: '⏳ Searching...',
+                emptyOption: '-- Empty --',
+                teamN: 'Team',
+                myTeam: 'My Team',
+                center: 'Center',
+                craneN: 'Crane',
+                current: 'current',
+                min: 'min',
+                pts: 'pts',
+                teamsCountLabel: 'Number of teams:',
+                noActive: 'No active teams',
+                alreadyWin: (T) => `✅ Already winning! Even if opponent takes all ${T} remaining points — you're still ahead.`,
+                impossible: (T, need, deficit) => `❌ Victory impossible. Tower has ${T} points left, but you need ${need} to guarantee a win.<div style="font-size:14px;margin-top:8px;">Short by ${deficit} points — nowhere to get them.</div>`,
+                needCapture: (need, T, pct, rate, hint) => `⚠️ To win, capture <strong>${need}</strong> of ${T} remaining points (${pct}%) — the rest will go to the opponent<div style="font-size:14px;margin-top:8px;">Minimum rate: <strong>${rate}/min</strong> → ${hint}</div>`,
+                hintCrane: (r) => `One crane is enough (${r}/min)`,
+                hintCenter: (cr, mr) => `Need at least center (${mr}/min), one crane (${cr}/min) not enough`,
+                hintCenterCrane: (r) => `Need center + crane (${r}/min)`,
+                hintMulti: (r) => `Need ${r}/min — multiple positions`,
+                noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORY IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Even capturing all points — only ${T} available. Not enough to overtake.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Don't waste attempts on this tower.</div>`,
+                winsTitle: '📍 Winning Options',
+                stratDoNothing: '😎 Do nothing — already winning!',
+                stratCenter: '🎯 Just hold <strong>CENTER</strong>',
+                stratOneCrane: '🏗️ Just hold <strong>ONE CRANE</strong>',
+                stratCranes: (n) => `🏗️ Hold <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong> — center not needed`,
+                stratCenterCranes: (n) => `🎯 Hold <strong>CENTER</strong> and <strong>${n} CRANE${n > 1 ? 'S' : ''}</strong>`,
+                noPositions: 'no positions',
+                enemies: 'Enemies',
+            },
+            de: {
+                title: 'Ölkrieg — Rechner',
+                sectionPoints: '📊 Aktuelle Teampunkte',
+                sectionTower: '🏗️ Turmkonfiguration',
+                sectionRecommendation: '💡 Empfehlung',
+                sectionForecast: '📈 Tagesprognose (UTC)',
+                team1Label: 'Mein Team',
+                team2Label: 'Team 2',
+                team3Label: 'Team 3',
+                team4Label: 'Team 4',
+                team5Label: 'Team 5',
+                cranesCountLabel: 'Anzahl der Kräne:',
+                centerTower: '🎯 Zentralturm',
+                crane: 'Kran',
+                teamSelectLabel: 'Team',
+                ptsPerMin: 'Punkte pro Minute',
+                clickToFind: 'Klicke, um die optimale Strategie zu finden',
+                findStrategy: '🔍 Strategie finden',
+                searching: '⏳ Suche...',
+                emptyOption: '-- Leer --',
+                teamN: 'Team',
+                myTeam: 'Mein Team',
+                center: 'Zentrum',
+                craneN: 'Kran',
+                current: 'aktuell',
+                min: 'Min',
+                pts: 'Pkt',
+                teamsCountLabel: 'Anzahl der Teams:',
+                noActive: 'Keine aktiven Teams',
+                alreadyWin: (T) => `✅ Du gewinnst bereits! Selbst wenn der Gegner alle ${T} verbleibenden Punkte nimmt — du bleibst vorne.`,
+                impossible: (T, need, deficit) => `❌ Sieg unmöglich. Auf dem Turm bleiben ${T} Punkte, aber du brauchst ${need} für einen garantierten Sieg.<div style="font-size:14px;margin-top:8px;">Es fehlen ${deficit} Punkte — unerreichbar.</div>`,
+                needCapture: (need, T, pct, rate, hint) => `⚠️ Zum Sieg musst du <strong>${need}</strong> von ${T} verbleibenden Punkten erobern (${pct}%) — den Rest nimmt der Gegner<div style="font-size:14px;margin-top:8px;">Mindestrate: <strong>${rate}/Min</strong> → ${hint}</div>`,
+                hintCrane: (r) => `Ein Kran reicht (${r}/Min)`,
+                hintCenter: (cr, mr) => `Mindestens Zentrum nötig (${mr}/Min), ein Kran (${cr}/Min) reicht nicht`,
+                hintCenterCrane: (r) => `Zentrum + Kran nötig (${r}/Min)`,
+                hintMulti: (r) => `${r}/Min nötig — mehrere Positionen`,
+                noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ SIEG UNMÖGLICH</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Selbst bei Eroberung aller Punkte — nur ${T} verfügbar. Nicht genug.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Verschwende keine Versuche an diesem Turm.</div>`,
+                winsTitle: '📍 Siegoptionen',
+                stratDoNothing: '😎 Nichts tun — du gewinnst bereits!',
+                stratCenter: '🎯 Es reicht, das <strong>ZENTRUM</strong> zu halten',
+                stratOneCrane: '🏗️ Es reicht, <strong>EINEN KRAN</strong> zu halten',
+                stratCranes: (n) => `🏗️ Halte <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong> — Zentrum nicht nötig`,
+                stratCenterCranes: (n) => `🎯 Halte <strong>ZENTRUM</strong> und <strong>${n} KRAN${n > 1 ? 'E' : ''}</strong>`,
+                noPositions: 'keine Positionen',
+                enemies: 'Gegner',
+            },
+            fr: {
+                title: 'Guerre du pétrole — Calculateur',
+                sectionPoints: '📊 Points actuels des équipes',
+                sectionTower: '🏗️ Configuration de la tour',
+                sectionRecommendation: '💡 Recommandation',
+                sectionForecast: '📈 Prévision fin de journée (UTC)',
+                team1Label: 'Mon équipe',
+                team2Label: 'Équipe 2',
+                team3Label: 'Équipe 3',
+                team4Label: 'Équipe 4',
+                team5Label: 'Équipe 5',
+                cranesCountLabel: 'Nombre de grues :',
+                centerTower: '🎯 Tour centrale',
+                crane: 'Grue',
+                teamSelectLabel: 'Équipe',
+                ptsPerMin: 'Points par minute',
+                clickToFind: 'Cliquez pour trouver la stratégie optimale',
+                findStrategy: '🔍 Trouver une stratégie',
+                searching: '⏳ Recherche...',
+                emptyOption: '-- Vide --',
+                teamN: 'Équipe',
+                myTeam: 'Mon équipe',
+                center: 'Centre',
+                craneN: 'Grue',
+                current: 'actuel',
+                min: 'min',
+                pts: 'pts',
+                teamsCountLabel: "Nombre d'équipes :",
+                noActive: "Aucune équipe active",
+                alreadyWin: (T) => `✅ Déjà en tête ! Même si l'adversaire prend les ${T} points restants — vous gardez l'avantage.`,
+                impossible: (T, need, deficit) => `❌ Victoire impossible. Il reste ${T} points sur la tour, mais il en faut ${need} pour garantir la victoire.<div style="font-size:14px;margin-top:8px;">Il manque ${deficit} points — impossible à obtenir.</div>`,
+                needCapture: (need, T, pct, rate, hint) => `⚠️ Pour gagner, capturez <strong>${need}</strong> des ${T} points restants (${pct}%) — le reste ira à l'adversaire<div style="font-size:14px;margin-top:8px;">Débit minimum : <strong>${rate}/min</strong> → ${hint}</div>`,
+                hintCrane: (r) => `Une grue suffit (${r}/min)`,
+                hintCenter: (cr, mr) => `Le centre est nécessaire (${mr}/min), une grue (${cr}/min) ne suffit pas`,
+                hintCenterCrane: (r) => `Centre + grue nécessaire (${r}/min)`,
+                hintMulti: (r) => `${r}/min nécessaire — plusieurs positions`,
+                noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTOIRE IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Même en capturant tous les points — seulement ${T} disponibles. Pas assez.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Ne gaspillez pas vos tentatives sur cette tour.</div>`,
+                winsTitle: '📍 Options de victoire',
+                stratDoNothing: '😎 Ne rien faire — vous gagnez déjà !',
+                stratCenter: '🎯 Il suffit de tenir le <strong>CENTRE</strong>',
+                stratOneCrane: '🏗️ Il suffit de tenir <strong>UNE GRUE</strong>',
+                stratCranes: (n) => `🏗️ Tenez <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong> — centre pas nécessaire`,
+                stratCenterCranes: (n) => `🎯 Tenez le <strong>CENTRE</strong> et <strong>${n} GRUE${n > 1 ? 'S' : ''}</strong>`,
+                noPositions: 'aucune position',
+                enemies: 'Ennemis',
+            },
+            es: {
+                title: 'Guerra del petróleo — Calculadora',
+                sectionPoints: '📊 Puntos actuales de equipos',
+                sectionTower: '🏗️ Configuración de la torre',
+                sectionRecommendation: '💡 Recomendación',
+                sectionForecast: '📈 Pronóstico de fin de día (UTC)',
+                team1Label: 'Mi equipo',
+                team2Label: 'Equipo 2',
+                team3Label: 'Equipo 3',
+                team4Label: 'Equipo 4',
+                team5Label: 'Equipo 5',
+                cranesCountLabel: 'Número de grúas:',
+                centerTower: '🎯 Torre central',
+                crane: 'Grúa',
+                teamSelectLabel: 'Equipo',
+                ptsPerMin: 'Puntos por minuto',
+                clickToFind: 'Pulsa para encontrar la estrategia óptima',
+                findStrategy: '🔍 Buscar estrategia',
+                searching: '⏳ Buscando...',
+                emptyOption: '-- Vacío --',
+                teamN: 'Equipo',
+                myTeam: 'Mi equipo',
+                center: 'Centro',
+                craneN: 'Grúa',
+                current: 'actual',
+                min: 'min',
+                pts: 'pts',
+                teamsCountLabel: 'Número de equipos:',
+                noActive: 'Sin equipos activos',
+                alreadyWin: (T) => `✅ ¡Ya vas ganando! Aunque el rival tome los ${T} puntos restantes — sigues adelante.`,
+                impossible: (T, need, deficit) => `❌ Victoria imposible. Quedan ${T} puntos en la torre, pero necesitas ${need} para ganar.<div style="font-size:14px;margin-top:8px;">Faltan ${deficit} puntos — no hay de dónde sacarlos.</div>`,
+                needCapture: (need, T, pct, rate, hint) => `⚠️ Para ganar, captura <strong>${need}</strong> de ${T} puntos restantes (${pct}%) — el resto lo tomará el rival<div style="font-size:14px;margin-top:8px;">Velocidad mínima: <strong>${rate}/min</strong> → ${hint}</div>`,
+                hintCrane: (r) => `Una grúa es suficiente (${r}/min)`,
+                hintCenter: (cr, mr) => `Se necesita el centro (${mr}/min), una grúa (${cr}/min) no basta`,
+                hintCenterCrane: (r) => `Se necesita centro + grúa (${r}/min)`,
+                hintMulti: (r) => `Se necesita ${r}/min — varias posiciones`,
+                noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORIA IMPOSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Incluso capturando todo — solo ${T} puntos disponibles. No es suficiente.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">No gastes intentos en esta torre.</div>`,
+                winsTitle: '📍 Opciones de victoria',
+                stratDoNothing: '😎 ¡No hagas nada — ya estás ganando!',
+                stratCenter: '🎯 Basta con mantener el <strong>CENTRO</strong>',
+                stratOneCrane: '🏗️ Basta con mantener <strong>UNA GRÚA</strong>',
+                stratCranes: (n) => `🏗️ Mantén <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong> — centro no necesario`,
+                stratCenterCranes: (n) => `🎯 Mantén el <strong>CENTRO</strong> y <strong>${n} GRÚA${n > 1 ? 'S' : ''}</strong>`,
+                noPositions: 'sin posiciones',
+                enemies: 'Enemigos',
+            }
+        };
+
+        let lang = 'ru';
+        let L = LANGS[lang];
+
+        function t(key) { return L[key] || key; }
+
+        function setLang(newLang) {
+            lang = newLang;
+            L = LANGS[lang];
+            document.querySelectorAll('.lang-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.lang === lang);
+            });
+            // Update static elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (L[key] && typeof L[key] === 'string') {
+                    el.textContent = L[key];
+                }
+            });
+            // Update select options
+            updateSelectOptions();
+            // Re-run calculations to update dynamic text
+            calculate();
+            // Re-run optimizer so recommendation text updates too
+            document.getElementById('optimizeBtn').click();
+        }
+
+        function updateSelectOptions() {
+            const teamCount = getActiveTeamsCount();
+            document.querySelectorAll('.team-option-select').forEach(sel => {
+                const currentVal = sel.value;
+                sel.innerHTML = `<option value="">${t('emptyOption')}</option>`;
+                for (let i = 1; i <= teamCount; i++) {
+                    const name = i === 1 ? t('myTeam') : `${t('teamN')} ${i}`;
+                    sel.innerHTML += `<option value="${i}">${name}</option>`;
+                }
+                // Reset if selected team is no longer active
+                if (parseInt(currentVal) > teamCount) {
+                    sel.value = '';
+                } else {
+                    sel.value = currentVal;
+                }
+            });
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => setLang(btn.dataset.lang));
+        });
+
+        // ==================== Constants & Elements ====================
+        const TOWER_MIDDLE_RATE = 6;
+        const CRANE_RATE = 4;
+
+        const pointsInputs = {
+            1: document.getElementById('points1'),
+            2: document.getElementById('points2'),
+            3: document.getElementById('points3'),
+            4: document.getElementById('points4'),
+            5: document.getElementById('points5')
+        };
+
+        const towerSelects = {
+            middle: document.getElementById('middle'),
+            crane1: document.getElementById('crane1'),
+            crane2: document.getElementById('crane2'),
+            crane3: document.getElementById('crane3'),
+            crane4: document.getElementById('crane4')
+        };
+
+        const teamsCountSelect = document.getElementById('teamsCount');
+        const teamBlocks = {
+            2: document.getElementById('teamBlock2'),
+            3: document.getElementById('teamBlock3'),
+            4: document.getElementById('teamBlock4'),
+            5: document.getElementById('teamBlock5')
+        };
+
+        function getActiveTeamsCount() {
+            return parseInt(teamsCountSelect.value);
+        }
+
+        function updateTeamVisibility() {
+            const count = getActiveTeamsCount();
+            for (let i = 2; i <= 5; i++) {
+                teamBlocks[i].style.display = i <= count ? '' : 'none';
+                if (i > count) pointsInputs[i].value = 0;
+            }
+            updateSelectOptions();
+            calculate();
+        }
+
+        teamsCountSelect.addEventListener('change', updateTeamVisibility);
+
+        const cranesCountSelect = document.getElementById('cranesCount');
+        const craneItems = {
+            1: document.getElementById('craneItem1'),
+            2: document.getElementById('craneItem2'),
+            3: document.getElementById('craneItem3'),
+            4: document.getElementById('craneItem4')
+        };
+
+        function getActiveCranesCount() {
+            return parseInt(cranesCountSelect.value);
+        }
+
+        function updateCraneVisibility() {
+            const count = getActiveCranesCount();
+            for (let i = 1; i <= 4; i++) {
+                craneItems[i].style.display = i <= count ? '' : 'none';
+                if (i > count) towerSelects[`crane${i}`].value = '';
+            }
+            calculate();
+        }
+
+        cranesCountSelect.addEventListener('change', updateCraneVisibility);
+
+        Object.values(pointsInputs).forEach(input => {
+            input.addEventListener('change', calculate);
+            input.addEventListener('input', calculate);
+        });
+
+        Object.values(towerSelects).forEach(select => {
+            select.addEventListener('change', calculate);
+        });
+
+        setInterval(updateTimer, 1000);
+
+        // ==================== Timer ====================
+        function updateTimer() {
+            const now = new Date();
+            const endOfDay = new Date(now);
+            endOfDay.setUTCHours(23, 59, 59, 999);
+            const timeLeft = endOfDay - now;
+            if (timeLeft <= 0) {
+                document.getElementById('timer').textContent = '00:00:00';
+                return;
+            }
+            const h = Math.floor(timeLeft / 3600000);
+            const m = Math.floor((timeLeft % 3600000) / 60000);
+            const s = Math.floor((timeLeft % 60000) / 1000);
+            document.getElementById('timer').textContent =
+                `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
+        function getTimeLeftMinutes() {
+            const now = new Date();
+            const endOfDay = new Date(now);
+            endOfDay.setUTCHours(23, 59, 59, 999);
+            return Math.max(0, Math.floor((endOfDay - now) / 60000));
+        }
+
+        // ==================== Core Calculation ====================
+        function calculate() {
+            const minutesLeft = getTimeLeftMinutes();
+            const currentPoints = {};
+            const pointsPerMinute = {};
+            for (let i = 1; i <= 5; i++) {
+                currentPoints[i] = parseInt(pointsInputs[i].value) || 0;
+                pointsPerMinute[i] = 0;
+            }
+
+            const middleTeam = towerSelects.middle.value;
+            if (middleTeam) pointsPerMinute[middleTeam] += TOWER_MIDDLE_RATE;
+
+            [1,2,3,4].forEach(n => {
+                const team = towerSelects[`crane${n}`].value;
+                if (team) pointsPerMinute[team] += CRANE_RATE;
+            });
+
+            const teamCount = getActiveTeamsCount();
+            const finalPoints = {};
+            const activeTeams = [];
+            for (let team = 1; team <= teamCount; team++) {
+                finalPoints[team] = currentPoints[team] + pointsPerMinute[team] * minutesLeft;
+                activeTeams.push(team);
+            }
+
+            checkVictory(currentPoints, minutesLeft);
+        }
+
+        // ==================== Victory Check ====================
+        function checkVictory(currentPoints, minutesLeft) {
+            const verdictDiv = document.getElementById('verdict');
+            const P1 = currentPoints[1];
+
+            const teamCount = getActiveTeamsCount();
+            let Pmax = 0;
+            for (let team = 2; team <= teamCount; team++) {
+                if (currentPoints[team] > Pmax) Pmax = currentPoints[team];
+            }
+
+            if (teamCount < 2) { verdictDiv.innerHTML = ''; return; }
+
+            const activeCranes = getActiveCranesCount();
+            const totalRate = TOWER_MIDDLE_RATE + CRANE_RATE * activeCranes;
+            const T = totalRate * minutesLeft;
+            const neededExact = (Pmax + T - P1) / 2;
+            const neededPoints = Math.floor(neededExact) + 1;
+
+            const Tf = Math.floor(T).toLocaleString();
+            const Nf = Math.floor(neededPoints).toLocaleString();
+
+            if (neededPoints <= 0) {
+                verdictDiv.innerHTML = `<div class="verdict win">${L.alreadyWin(Tf)}</div>`;
+            } else if (neededPoints > T) {
+                const deficit = Math.ceil(neededPoints - T).toLocaleString();
+                verdictDiv.innerHTML = `<div class="verdict lose">${L.impossible(Tf, Nf, deficit)}</div>`;
+            } else {
+                const pct = Math.ceil((neededPoints / T) * 100);
+                const minRate = (neededPoints / minutesLeft).toFixed(1);
+                let hint;
+                const mr = neededPoints / minutesLeft;
+                if (mr <= CRANE_RATE) hint = L.hintCrane(CRANE_RATE);
+                else if (mr <= TOWER_MIDDLE_RATE) hint = L.hintCenter(CRANE_RATE, TOWER_MIDDLE_RATE);
+                else if (mr <= TOWER_MIDDLE_RATE + CRANE_RATE && activeCranes >= 1) hint = L.hintCenterCrane(TOWER_MIDDLE_RATE + CRANE_RATE);
+                else hint = L.hintMulti(minRate);
+                verdictDiv.innerHTML = `<div class="verdict need-action">${L.needCapture(Nf, Tf, pct, minRate, hint)}</div>`;
+            }
+        }
+
+        // ==================== Optimizer ====================
+        document.getElementById('optimizeBtn').addEventListener('click', function() {
+            this.textContent = t('searching');
+            this.disabled = true;
+            setTimeout(() => {
+                const result = findOptimalDistribution();
+                showRecommendation(result);
+                this.textContent = t('findStrategy');
+                this.disabled = false;
+            }, 100);
+        });
+
+        function calculateFinalPoints(config, currentPoints, minutesLeft, positions) {
+            const ppm = { 1:0, 2:0, 3:0, 4:0, 5:0 };
+            for (let i = 0; i < positions.length; i++) {
+                const team = config[i];
+                if (team) ppm[team] += positions[i] === 'middle' ? TOWER_MIDDLE_RATE : CRANE_RATE;
+            }
+            const fp = {};
+            for (let team = 1; team <= 5; team++) {
+                fp[team] = currentPoints[team] + ppm[team] * minutesLeft;
+            }
+            return { finalPoints: fp, pointsPerMinute: ppm };
+        }
+
+        function findAllWinningStrategies() {
+            const cp = {};
+            for (let i = 1; i <= 5; i++) cp[i] = parseInt(pointsInputs[i].value) || 0;
+            const minutesLeft = getTimeLeftMinutes();
+            const teamCount = getActiveTeamsCount();
+            const enemyTeams = [];
+            for (let t = 2; t <= teamCount; t++) enemyTeams.push(t);
+
+            const activeCranes = getActiveCranesCount();
+            const positions = ['middle'];
+            for (let i = 1; i <= activeCranes; i++) positions.push(`crane${i}`);
+            const rates = {};
+            positions.forEach(p => { rates[p] = p === 'middle' ? TOWER_MIDDLE_RATE : CRANE_RATE; });
+
+            const wins = [];
+
+            function tryPos(t1pos) {
+                const remIdx = [];
+                for (let i = 0; i < positions.length; i++) { if (!t1pos.includes(i)) remIdx.push(i); }
+                const sortedEnemies = [...enemyTeams].sort((a, b) => cp[b] - cp[a]);
+                const sortedRem = [...remIdx].sort((a, b) => rates[positions[b]] - rates[positions[a]]);
+                const cfg = new Array(positions.length).fill(null);
+                t1pos.forEach(i => { cfg[i] = 1; });
+                for (let i = 0; i < sortedEnemies.length && i < sortedRem.length; i++) {
+                    cfg[sortedRem[i]] = sortedEnemies[i];
+                }
+                const { finalPoints, pointsPerMinute } = calculateFinalPoints(cfg, cp, minutesLeft, positions);
+                const t1f = finalPoints[1];
+                const maxOpp = Math.max(...enemyTeams.map(t => finalPoints[t] || 0));
+                const diff = t1f - maxOpp;
+                if (diff >= 1) {
+                    const hasMiddle = t1pos.includes(0);
+                    const craneCount = t1pos.length - (hasMiddle ? 1 : 0);
+                    wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: t1pos.length, hasMiddle, craneCount, team1Positions: t1pos });
+                }
+            }
+
+            const total = positions.length;
+            for (let num = 0; num <= total; num++) {
+                if (num === 0) {
+                    const cfg = new Array(total).fill(null);
+                    const se = [...enemyTeams].sort((a, b) => cp[b] - cp[a]);
+                    for (let i = 0; i < se.length && i < total; i++) cfg[i] = se[i];
+                    const { finalPoints, pointsPerMinute } = calculateFinalPoints(cfg, cp, minutesLeft, positions);
+                    const diff = finalPoints[1] - Math.max(...enemyTeams.map(t => finalPoints[t] || 0));
+                    if (diff >= 1) wins.push({ config: cfg, difference: diff, finalPoints, pointsPerMinute, positions, positionsUsed: 0, hasMiddle: false, craneCount: 0, team1Positions: [] });
+                } else {
+                    (function gen(start, cur) {
+                        if (cur.length === num) { tryPos([...cur]); return; }
+                        for (let i = start; i < total; i++) { cur.push(i); gen(i+1, cur); cur.pop(); }
+                    })(0, []);
+                }
+            }
+
+            const seen = new Set();
+            const unique = wins.filter(s => {
+                const key = `${s.hasMiddle?1:0}_${s.craneCount}`;
+                if (seen.has(key)) return false;
+                seen.add(key); return true;
+            });
+
+            unique.sort((a, b) => {
+                if (a.positionsUsed !== b.positionsUsed) return a.positionsUsed - b.positionsUsed;
+                if (a.hasMiddle !== b.hasMiddle) return a.hasMiddle ? 1 : -1;
+                return b.difference - a.difference;
+            });
+
+            return unique;
+        }
+
+        function findOptimalDistribution() {
+            const s = findAllWinningStrategies();
+            return s.length > 0 ? s : null;
+        }
+
+        function getStrategyDescription(s) {
+            if (s.positionsUsed === 0) return L.stratDoNothing;
+            if (s.positionsUsed === 1) return s.hasMiddle ? L.stratCenter : L.stratOneCrane;
+            if (!s.hasMiddle) return L.stratCranes(s.craneCount);
+            return L.stratCenterCranes(s.craneCount);
+        }
+
+        function posName(p) {
+            return p === 'middle' ? t('center') : `${t('craneN')} ${p.replace('crane','')}`;
+        }
+
+        // ==================== Show Recommendation ====================
+        function showRecommendation(strategies) {
+            const rec = document.getElementById('recommendation');
+
+            if (!strategies || strategies.length === 0) {
+                const T = Math.floor((TOWER_MIDDLE_RATE + CRANE_RATE * getActiveCranesCount()) * getTimeLeftMinutes()).toLocaleString();
+                rec.innerHTML = `<div style="background:rgba(255,55,95,0.08);border-left:3px solid #ff375f;padding:15px;border-radius:4px;border:1px solid rgba(255,55,95,0.2);">${L.noWin(T)}</div>`;
+                return;
+            }
+
+            let html = `<div><h3 style="margin:0 0 15px;color:#00e5ff;font-size:16px;text-transform:uppercase;letter-spacing:1px;">${L.winsTitle}</h3>`;
+
+            strategies.forEach((s, idx) => {
+                const diff = Math.floor(s.difference);
+                const desc = getStrategyDescription(s);
+                const t1r = s.pointsPerMinute[1];
+                let maxER = 0;
+                for (let t = 2; t <= 5; t++) { if (s.pointsPerMinute[t] > maxER) maxER = s.pointsPerMinute[t]; }
+                const net = t1r - maxER;
+                const best = idx === 0;
+
+                html += `<div style="background:${best?'rgba(0,255,136,0.06)':'#0d1320'};border-left:3px solid ${best?'#00ff88':'#2a3545'};padding:14px;border-radius:4px;margin-bottom:10px;cursor:pointer;border:1px solid ${best?'rgba(0,255,136,0.2)':'#1e2a3a'};transition:border-color .2s;" class="strategy-option" data-index="${idx}">`;
+                html += `<div style="font-size:15px;font-weight:700;color:${best?'#00ff88':'#c8d6e5'};">${best?'⭐ ':''}${desc}</div>`;
+
+                html += '<div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;">';
+
+                // Team 1
+                html += `<div style="background:#111827;padding:8px;border-radius:4px;border-left:2px solid #00ff88;">`;
+                html += `<strong style="color:#00ff88;">${t('myTeam')}:</strong> <span style="color:#00e5ff;font-family:Menlo,Courier New,monospace;">+${t1r}/${t('min')}</span><br>`;
+                if (s.positionsUsed === 0) {
+                    html += `<span style="color:#5a6577;">${L.noPositions}</span>`;
+                } else {
+                    const myP = [];
+                    s.positions.forEach((p, i) => { if (s.config[i] === 1) myP.push(posName(p)); });
+                    html += `<span style="color:#8892a4;">${myP.join(', ')}</span>`;
+                }
+                html += '</div>';
+
+                // Enemies
+                html += `<div style="background:#111827;padding:8px;border-radius:4px;border-left:2px solid #ff375f;">`;
+                html += `<strong style="color:#ff375f;">${L.enemies}:</strong><br>`;
+                const ep = [];
+                s.positions.forEach((p, i) => {
+                    const tm = s.config[i];
+                    if (tm && tm !== 1) {
+                        ep.push(`${t('teamN')[0]}${tm}: ${posName(p)} <span style="color:#00e5ff;font-family:Menlo,Courier New,monospace;">(+${s.pointsPerMinute[tm]}/${t('min')})</span>`);
+                    }
+                });
+                html += ep.length === 0 ? `<span style="color:#5a6577;">${L.noPositions}</span>` : `<span style="color:#8892a4;">${ep.join('<br>')}</span>`;
+                html += '</div></div>';
+
+                html += `<div style="margin-top:10px;padding:8px;background:#111827;border-radius:4px;font-size:13px;color:#8892a4;font-family:Menlo,Courier New,monospace;">`;
+                html += `NET: <strong style="color:#00e5ff;">+${net}/${t('min')}</strong> → ${lang === 'ru' ? 'разница' : 'diff'}: <strong style="color:#00ff88;">+${diff}</strong> ${t('pts')}</div>`;
+                html += '</div>';
+            });
+
+            html += '</div>';
+            rec.innerHTML = html;
+
+            document.querySelectorAll('.strategy-option').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    const s = strategies[idx];
+                    document.querySelectorAll('.strategy-option').forEach(o => { o.style.outline = 'none'; });
+                    this.style.outline = '2px solid #00e5ff';
+                    this.style.outlineOffset = '2px';
+                    Object.values(towerSelects).forEach(sel => { sel.value = ''; });
+                    s.positions.forEach((p, i) => { if (towerSelects[p]) towerSelects[p].value = s.config[i] || ''; });
+                    calculate();
+                });
+            });
+        }
+
+        // ==================== Init ====================
+        setLang('ru');
+        updateTeamVisibility();
+        updateCraneVisibility();
+        updateTimer();
+        calculate();
+    </script>
+</body>
+</html>
