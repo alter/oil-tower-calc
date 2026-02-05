@@ -1020,13 +1020,11 @@
             function tryPos(t1pos) {
                 const remIdx = [];
                 for (let i = 0; i < positions.length; i++) { if (!t1pos.includes(i)) remIdx.push(i); }
-                const sortedEnemies = [...enemyTeams].sort((a, b) => cp[b] - cp[a]);
-                const sortedRem = [...remIdx].sort((a, b) => rates[positions[b]] - rates[positions[a]]);
+                // Worst case: strongest enemy takes ALL remaining positions
+                const strongestEnemy = [...enemyTeams].sort((a, b) => cp[b] - cp[a])[0];
                 const cfg = new Array(positions.length).fill(null);
                 t1pos.forEach(i => { cfg[i] = 1; });
-                for (let i = 0; i < sortedEnemies.length && i < sortedRem.length; i++) {
-                    cfg[sortedRem[i]] = sortedEnemies[i];
-                }
+                remIdx.forEach(i => { cfg[i] = strongestEnemy; });
                 const { finalPoints, pointsPerMinute } = calculateFinalPoints(cfg, cp, minutesLeft, positions);
                 const t1f = finalPoints[1];
                 const maxOpp = Math.max(...enemyTeams.map(t => finalPoints[t] || 0));
