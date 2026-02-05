@@ -1127,13 +1127,15 @@
                 html += '</div>';
 
                 // Enemies
+                let maxEnemyRate = 0;
+                for (let et = 2; et <= 5; et++) { if (s.pointsPerMinute[et] > maxEnemyRate) maxEnemyRate = s.pointsPerMinute[et]; }
                 html += `<div style="background:#111827;padding:8px;border-radius:4px;border-left:2px solid #ff375f;">`;
-                html += `<strong style="color:#ff375f;">${L.enemies}:</strong><br>`;
+                html += `<strong style="color:#ff375f;">${L.enemies}:</strong> <span style="color:#00e5ff;font-family:Menlo,Courier New,monospace;">+${maxEnemyRate}/${t('min')}</span><br>`;
                 const ep = [];
                 s.positions.forEach((p, i) => {
                     const tm = s.config[i];
                     if (tm && tm !== 1) {
-                        ep.push(`${t('teamN')[0]}${tm}: ${posName(p)} <span style="color:#00e5ff;font-family:Menlo,Courier New,monospace;">(+${s.pointsPerMinute[tm]}/${t('min')})</span>`);
+                        ep.push(`${posName(p)} <span style="color:#5a6577;">(+${getPositionRate(p)}/${t('min')})</span>`);
                     }
                 });
                 html += ep.length === 0 ? `<span style="color:#5a6577;">${L.noPositions}</span>` : `<span style="color:#8892a4;">${ep.join('<br>')}</span>`;
