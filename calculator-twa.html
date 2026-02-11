@@ -542,11 +542,12 @@
                 teamsCountLabel: 'Количество команд:',
                 noActive: 'Нет активных команд',
                 alreadyWin: (T) => `✅ Уже побеждаешь! Даже если соперник заберёт все ${T} оставшихся очков — ты всё равно впереди.`,
-                impossible: (T, need, deficit) => `❌ Победа невозможна. На башне осталось ${T} очков, а для гарантированной победы нужно забрать ${need}.<div style="font-size:14px;margin-top:8px;">Не хватает ${deficit} очков — неоткуда взять.</div>`,
+                impossible: (T, bestFinal, enemyFinal, gap) => `❌ Победа невозможна. Даже забрав все ${T} очков с башни (враг — 0): ты ${bestFinal} vs враг ${enemyFinal}.<div style="font-size:14px;margin-top:8px;">Отстаёшь на ${gap} — неоткуда добрать.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Для победы нужно захватить <strong>${need}</strong> из ${T} оставшихся очков (${pct}%), потому что остальное заберёт соперник<div style="font-size:14px;margin-top:8px;">Минимальная скорость: <strong>${rate}/мин</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Хватит одного крана (${r}/мин)`,
-                hintCenter: (cr, mr) => `Нужны минимум бочки (${mr}/мин), одного крана (${cr}/мин) мало`,
-                hintCenterCrane: (r) => `Нужны бочки + кран (${r}/мин)`,
+                hintCranes: (n) => `Хватит ${n} кранов (${n}/мин)`,
+                hintBarrels: (n) => `Хватит ${n} бочек (${n * 2}/мин)`,
+                hintCenterCrane: (r) => `Нужны бочки + краны (${r}/мин)`,
                 hintMulti: (r) => `Нужно ${r}/мин — несколько позиций`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ ПОБЕДА НЕВОЗМОЖНА</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Даже если захватить все точки — всего можно набрать ${T} очков. Этого не хватит.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Не тратьте попытки на эту башню.</div>`,
                 winsTitle: '📍 Варианты для победы',
@@ -557,6 +558,7 @@
                 stratBarrelsCranes: (b, c) => `🎯 Держи <strong>${b} ${b === 1 ? 'БОЧКУ' : 'БОЧКИ'}</strong> и <strong>${c} ${c === 1 ? 'КРАН' : 'КРАНА'}</strong>`,
                 noPositions: 'нет позиций',
                 enemies: 'Враги',
+                finalScoreLabel: 'Итог к концу дня',
             },
             en: {
                 title: 'Oil Clash — Calculator',
@@ -589,11 +591,12 @@
                 teamsCountLabel: 'Number of teams:',
                 noActive: 'No active teams',
                 alreadyWin: (T) => `✅ Already winning! Even if opponent takes all ${T} remaining points — you're still ahead.`,
-                impossible: (T, need, deficit) => `❌ Victory impossible. Tower has ${T} points left, but you need ${need} to guarantee a win.<div style="font-size:14px;margin-top:8px;">Short by ${deficit} points — nowhere to get them.</div>`,
+                impossible: (T, bestFinal, enemyFinal, gap) => `❌ Victory impossible. Even taking all ${T} tower points (enemy gets 0): you ${bestFinal} vs enemy ${enemyFinal}.<div style="font-size:14px;margin-top:8px;">Behind by ${gap} — nowhere to get them.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ To win, capture <strong>${need}</strong> of ${T} remaining points (${pct}%) — the rest will go to the opponent<div style="font-size:14px;margin-top:8px;">Minimum rate: <strong>${rate}/min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `One crane is enough (${r}/min)`,
-                hintCenter: (cr, mr) => `Need at least barrels (${mr}/min), one crane (${cr}/min) not enough`,
-                hintCenterCrane: (r) => `Need barrels + crane (${r}/min)`,
+                hintCranes: (n) => `${n} cranes enough (${n}/min)`,
+                hintBarrels: (n) => `${n} barrel${n > 1 ? 's' : ''} enough (${n * 2}/min)`,
+                hintCenterCrane: (r) => `Need barrels + cranes (${r}/min)`,
                 hintMulti: (r) => `Need ${r}/min — multiple positions`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORY IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Even capturing all points — only ${T} available. Not enough to overtake.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Don't waste attempts on this tower.</div>`,
                 winsTitle: '📍 Winning Options',
@@ -604,6 +607,7 @@
                 stratBarrelsCranes: (b, c) => `🎯 Hold <strong>${b} BARREL${b > 1 ? 'S' : ''}</strong> and <strong>${c} CRANE${c > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'no positions',
                 enemies: 'Enemies',
+                finalScoreLabel: 'End of day score',
             },
             de: {
                 title: 'Ölkrieg — Rechner',
@@ -636,11 +640,12 @@
                 teamsCountLabel: 'Anzahl der Teams:',
                 noActive: 'Keine aktiven Teams',
                 alreadyWin: (T) => `✅ Du gewinnst bereits! Selbst wenn der Gegner alle ${T} verbleibenden Punkte nimmt — du bleibst vorne.`,
-                impossible: (T, need, deficit) => `❌ Sieg unmöglich. Auf dem Turm bleiben ${T} Punkte, aber du brauchst ${need} für einen garantierten Sieg.<div style="font-size:14px;margin-top:8px;">Es fehlen ${deficit} Punkte — unerreichbar.</div>`,
+                impossible: (T, bestFinal, enemyFinal, gap) => `❌ Sieg unmöglich. Selbst mit allen ${T} Turmpunkten (Gegner bekommt 0): du ${bestFinal} vs Gegner ${enemyFinal}.<div style="font-size:14px;margin-top:8px;">Rückstand ${gap} — unerreichbar.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Zum Sieg musst du <strong>${need}</strong> von ${T} verbleibenden Punkten erobern (${pct}%) — den Rest nimmt der Gegner<div style="font-size:14px;margin-top:8px;">Mindestrate: <strong>${rate}/Min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Ein Kran reicht (${r}/Min)`,
-                hintCenter: (cr, mr) => `Mindestens Fässer nötig (${mr}/Min), ein Kran (${cr}/Min) reicht nicht`,
-                hintCenterCrane: (r) => `Fässer + Kran nötig (${r}/Min)`,
+                hintCranes: (n) => `${n} Kräne reichen (${n}/Min)`,
+                hintBarrels: (n) => `${n} ${n > 1 ? 'Fässer reichen' : 'Fass reicht'} (${n * 2}/Min)`,
+                hintCenterCrane: (r) => `Fässer + Kräne nötig (${r}/Min)`,
                 hintMulti: (r) => `${r}/Min nötig — mehrere Positionen`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ SIEG UNMÖGLICH</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Selbst bei Eroberung aller Punkte — nur ${T} verfügbar. Nicht genug.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Verschwende keine Versuche an diesem Turm.</div>`,
                 winsTitle: '📍 Siegoptionen',
@@ -651,6 +656,7 @@
                 stratBarrelsCranes: (b, c) => `🎯 Halte <strong>${b} FASS${b > 1 ? 'ER' : ''}</strong> und <strong>${c} KRAN${c > 1 ? 'E' : ''}</strong>`,
                 noPositions: 'keine Positionen',
                 enemies: 'Gegner',
+                finalScoreLabel: 'Endergebnis',
             },
             fr: {
                 title: 'Guerre du pétrole — Calculateur',
@@ -683,11 +689,12 @@
                 teamsCountLabel: "Nombre d'équipes :",
                 noActive: "Aucune équipe active",
                 alreadyWin: (T) => `✅ Déjà en tête ! Même si l'adversaire prend les ${T} points restants — vous gardez l'avantage.`,
-                impossible: (T, need, deficit) => `❌ Victoire impossible. Il reste ${T} points sur la tour, mais il en faut ${need} pour garantir la victoire.<div style="font-size:14px;margin-top:8px;">Il manque ${deficit} points — impossible à obtenir.</div>`,
+                impossible: (T, bestFinal, enemyFinal, gap) => `❌ Victoire impossible. Même en prenant les ${T} points (ennemi reçoit 0) : vous ${bestFinal} vs ennemi ${enemyFinal}.<div style="font-size:14px;margin-top:8px;">Retard de ${gap} — impossible à rattraper.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Pour gagner, capturez <strong>${need}</strong> des ${T} points restants (${pct}%) — le reste ira à l'adversaire<div style="font-size:14px;margin-top:8px;">Débit minimum : <strong>${rate}/min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Une grue suffit (${r}/min)`,
-                hintCenter: (cr, mr) => `Les barils sont nécessaires (${mr}/min), une grue (${cr}/min) ne suffit pas`,
-                hintCenterCrane: (r) => `Barils + grue nécessaire (${r}/min)`,
+                hintCranes: (n) => `${n} grues suffisent (${n}/min)`,
+                hintBarrels: (n) => `${n} ${n > 1 ? 'barils suffisent' : 'baril suffit'} (${n * 2}/min)`,
+                hintCenterCrane: (r) => `Barils + grues nécessaires (${r}/min)`,
                 hintMulti: (r) => `${r}/min nécessaire — plusieurs positions`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTOIRE IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Même en capturant tous les points — seulement ${T} disponibles. Pas assez.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Ne gaspillez pas vos tentatives sur cette tour.</div>`,
                 winsTitle: '📍 Options de victoire',
@@ -698,6 +705,7 @@
                 stratBarrelsCranes: (b, c) => `🎯 Tenez <strong>${b} BARIL${b > 1 ? 'S' : ''}</strong> et <strong>${c} GRUE${c > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'aucune position',
                 enemies: 'Ennemis',
+                finalScoreLabel: 'Score final',
             },
             es: {
                 title: 'Guerra del petróleo — Calculadora',
@@ -730,11 +738,12 @@
                 teamsCountLabel: 'Número de equipos:',
                 noActive: 'Sin equipos activos',
                 alreadyWin: (T) => `✅ ¡Ya vas ganando! Aunque el rival tome los ${T} puntos restantes — sigues adelante.`,
-                impossible: (T, need, deficit) => `❌ Victoria imposible. Quedan ${T} puntos en la torre, pero necesitas ${need} para ganar.<div style="font-size:14px;margin-top:8px;">Faltan ${deficit} puntos — no hay de dónde sacarlos.</div>`,
+                impossible: (T, bestFinal, enemyFinal, gap) => `❌ Victoria imposible. Incluso tomando los ${T} puntos (rival recibe 0): tú ${bestFinal} vs rival ${enemyFinal}.<div style="font-size:14px;margin-top:8px;">Atrás por ${gap} — no hay forma de alcanzarlo.</div>`,
                 needCapture: (need, T, pct, rate, hint) => `⚠️ Para ganar, captura <strong>${need}</strong> de ${T} puntos restantes (${pct}%) — el resto lo tomará el rival<div style="font-size:14px;margin-top:8px;">Velocidad mínima: <strong>${rate}/min</strong> → ${hint}</div>`,
                 hintCrane: (r) => `Una grúa es suficiente (${r}/min)`,
-                hintCenter: (cr, mr) => `Se necesitan los barriles (${mr}/min), una grúa (${cr}/min) no basta`,
-                hintCenterCrane: (r) => `Se necesitan barriles + grúa (${r}/min)`,
+                hintCranes: (n) => `${n} grúas son suficientes (${n}/min)`,
+                hintBarrels: (n) => `${n} ${n > 1 ? 'barriles son suficientes' : 'barril es suficiente'} (${n * 2}/min)`,
+                hintCenterCrane: (r) => `Se necesitan barriles + grúas (${r}/min)`,
                 hintMulti: (r) => `Se necesita ${r}/min — varias posiciones`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORIA IMPOSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Incluso capturando todo — solo ${T} puntos disponibles. No es suficiente.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">No gastes intentos en esta torre.</div>`,
                 winsTitle: '📍 Opciones de victoria',
@@ -745,6 +754,7 @@
                 stratBarrelsCranes: (b, c) => `🎯 Mantén <strong>${b} BARRIL${b > 1 ? 'ES' : ''}</strong> y <strong>${c} GRÚA${c > 1 ? 'S' : ''}</strong>`,
                 noPositions: 'sin posiciones',
                 enemies: 'Enemigos',
+                finalScoreLabel: 'Puntuación final',
             }
         };
 
@@ -955,12 +965,6 @@
                 if (team) pointsPerMinute[team] += getPositionRate(pos);
             });
 
-            const teamCount = getActiveTeamsCount();
-            const finalPoints = {};
-            for (let team = 1; team <= teamCount; team++) {
-                finalPoints[team] = currentPoints[team] + pointsPerMinute[team] * minutesLeft;
-            }
-
             checkVictory(currentPoints, minutesLeft);
         }
 
@@ -978,8 +982,8 @@
             if (teamCount < 2) { verdictDiv.innerHTML = ''; return; }
 
             const totalRate = getTotalRate();
-            const singleBarrelRate = BARREL_PTS;
-            const singleCraneRate = CRANE_PTS;
+            const totalBarrelRate = getMiddleRate();
+            const totalCraneRate = getActiveCranesCount() * CRANE_PTS;
             const T = totalRate * minutesLeft;
             const neededExact = (Pmax + T - P1) / 2;
             const neededPoints = Math.floor(neededExact) + 1;
@@ -990,16 +994,19 @@
             if (neededPoints <= 0) {
                 verdictDiv.innerHTML = `<div class="verdict win">${L.alreadyWin(Tf)}</div>`;
             } else if (neededPoints > T) {
-                const deficit = Math.ceil(neededPoints - T).toLocaleString();
-                verdictDiv.innerHTML = `<div class="verdict lose">${L.impossible(Tf, Nf, deficit)}</div>`;
+                const bestFinal = Math.floor(P1 + T).toLocaleString();
+                const PmaxF = Math.floor(Pmax).toLocaleString();
+                const realGap = Math.ceil(Pmax - P1 - T).toLocaleString();
+                verdictDiv.innerHTML = `<div class="verdict lose">${L.impossible(Tf, bestFinal, PmaxF, realGap)}</div>`;
             } else {
                 const pct = Math.ceil((neededPoints / T) * 100);
                 const minRate = (neededPoints / minutesLeft).toFixed(1);
                 let hint;
                 const mr = neededPoints / minutesLeft;
-                if (mr <= singleCraneRate) hint = L.hintCrane(singleCraneRate);
-                else if (mr <= singleBarrelRate) hint = L.hintCenter(singleCraneRate, singleBarrelRate);
-                else if (mr <= singleBarrelRate + singleCraneRate) hint = L.hintCenterCrane(singleBarrelRate + singleCraneRate);
+                if (mr <= CRANE_PTS) hint = L.hintCrane(CRANE_PTS);
+                else if (mr <= totalCraneRate) hint = L.hintCranes(Math.ceil(mr / CRANE_PTS));
+                else if (mr <= totalBarrelRate) hint = L.hintBarrels(Math.ceil(mr / BARREL_PTS));
+                else if (mr <= totalBarrelRate + totalCraneRate) hint = L.hintCenterCrane(totalBarrelRate + totalCraneRate);
                 else hint = L.hintMulti(minRate);
                 verdictDiv.innerHTML = `<div class="verdict need-action">${L.needCapture(Nf, Tf, pct, minRate, hint)}</div>`;
             }
@@ -1170,6 +1177,18 @@
 
                 html += `<div style="margin-top:10px;padding:8px;background:#111827;border-radius:4px;font-size:13px;color:#8892a4;font-family:Menlo,Courier New,monospace;">`;
                 html += `NET: <strong style="color:#00e5ff;">+${net}/${t('min')}</strong> → ${lang === 'ru' ? 'разница' : 'diff'}: <strong style="color:#00ff88;">+${diff}</strong> ${t('pts')}</div>`;
+
+                // Final scores for all teams
+                const teamCount = getActiveTeamsCount();
+                let scoresHtml = '';
+                for (let tm = 1; tm <= teamCount; tm++) {
+                    const fp = Math.floor(s.finalPoints[tm] || 0).toLocaleString();
+                    const color = tm === 1 ? '#00ff88' : '#ff375f';
+                    const name = tm === 1 ? t('myTeam') : `${t('teamN')} ${tm}`;
+                    scoresHtml += `<div style="display:inline-block;margin-right:15px;"><span style="color:#5a6577;">${name}:</span> <strong style="color:${color};">${fp}</strong></div>`;
+                }
+                html += `<div style="margin-top:8px;padding:8px;background:#0a0e17;border-radius:4px;font-size:12px;font-family:Menlo,Courier New,monospace;"><div style="color:#5a6577;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">${t('finalScoreLabel')}</div>${scoresHtml}</div>`;
+
                 html += '</div>';
             });
 
