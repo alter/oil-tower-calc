@@ -550,6 +550,7 @@
                 hintCenterCrane: (r) => `Нужны бочки + краны (${r}/мин)`,
                 hintMulti: (r) => `Нужно ${r}/мин — несколько позиций`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ ПОБЕДА НЕВОЗМОЖНА</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Даже если захватить все точки — всего можно набрать ${T} очков. Этого не хватит.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Не тратьте попытки на эту башню.</div>`,
+                currentSitTitle: '📊 Текущая ситуация',
                 winsTitle: '📍 Варианты для победы',
                 stratDoNothing: '😎 Ничего не делай — уже победишь!',
                 stratBarrels: (n) => `🎯 Достаточно держать <strong>${n} ${n === 1 ? 'БОЧКУ' : 'БОЧКИ'}</strong>`,
@@ -599,6 +600,7 @@
                 hintCenterCrane: (r) => `Need barrels + cranes (${r}/min)`,
                 hintMulti: (r) => `Need ${r}/min — multiple positions`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORY IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Even capturing all points — only ${T} available. Not enough to overtake.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Don't waste attempts on this tower.</div>`,
+                currentSitTitle: '📊 Current Situation',
                 winsTitle: '📍 Winning Options',
                 stratDoNothing: '😎 Do nothing — already winning!',
                 stratBarrels: (n) => `🎯 Just hold <strong>${n} BARREL${n > 1 ? 'S' : ''}</strong>`,
@@ -648,6 +650,7 @@
                 hintCenterCrane: (r) => `Fässer + Kräne nötig (${r}/Min)`,
                 hintMulti: (r) => `${r}/Min nötig — mehrere Positionen`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ SIEG UNMÖGLICH</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Selbst bei Eroberung aller Punkte — nur ${T} verfügbar. Nicht genug.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Verschwende keine Versuche an diesem Turm.</div>`,
+                currentSitTitle: '📊 Aktuelle Situation',
                 winsTitle: '📍 Siegoptionen',
                 stratDoNothing: '😎 Nichts tun — du gewinnst bereits!',
                 stratBarrels: (n) => `🎯 Es reicht, <strong>${n} FASS${n > 1 ? 'ER' : ''}</strong> zu halten`,
@@ -697,6 +700,7 @@
                 hintCenterCrane: (r) => `Barils + grues nécessaires (${r}/min)`,
                 hintMulti: (r) => `${r}/min nécessaire — plusieurs positions`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTOIRE IMPOSSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Même en capturant tous les points — seulement ${T} disponibles. Pas assez.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">Ne gaspillez pas vos tentatives sur cette tour.</div>`,
+                currentSitTitle: '📊 Situation actuelle',
                 winsTitle: '📍 Options de victoire',
                 stratDoNothing: '😎 Ne rien faire — vous gagnez déjà !',
                 stratBarrels: (n) => `🎯 Il suffit de tenir <strong>${n} BARIL${n > 1 ? 'S' : ''}</strong>`,
@@ -746,6 +750,7 @@
                 hintCenterCrane: (r) => `Se necesitan barriles + grúas (${r}/min)`,
                 hintMulti: (r) => `Se necesita ${r}/min — varias posiciones`,
                 noWin: (T) => `<div style="font-size:16px;font-weight:bold;color:#ff375f;">❌ VICTORIA IMPOSIBLE</div><div style="margin-top:10px;color:#c8d6e5;font-size:14px;">Incluso capturando todo — solo ${T} puntos disponibles. No es suficiente.</div><div style="margin-top:8px;color:#5a6577;font-size:13px;">No gastes intentos en esta torre.</div>`,
+                currentSitTitle: '📊 Situación actual',
                 winsTitle: '📍 Opciones de victoria',
                 stratDoNothing: '😎 ¡No hagas nada — ya estás ganando!',
                 stratBarrels: (n) => `🎯 Basta con mantener <strong>${n} BARRIL${n > 1 ? 'ES' : ''}</strong>`,
@@ -1122,17 +1127,102 @@
             return t('craneN') + ' ' + pos.replace('crane', '');
         }
 
+        // ==================== Current Scenario ====================
+        function getCurrentScenario() {
+            const cp = {};
+            for (let i = 1; i <= 5; i++) cp[i] = parseInt(pointsInputs[i].value) || 0;
+            const minutesLeft = getTimeLeftMinutes();
+            const teamCount = getActiveTeamsCount();
+            const positions = getPositions();
+
+            const ppm = {};
+            for (let i = 1; i <= 5; i++) ppm[i] = 0;
+            const config = [];
+            positions.forEach(pos => {
+                const team = towerSelects[pos] ? towerSelects[pos].value : '';
+                config.push(team ? parseInt(team) : null);
+                if (team) ppm[parseInt(team)] += getPositionRate(pos);
+            });
+
+            const finalPoints = {};
+            for (let i = 1; i <= 5; i++) {
+                finalPoints[i] = cp[i] + ppm[i] * minutesLeft;
+            }
+
+            let maxEnemyFinal = 0;
+            for (let i = 2; i <= teamCount; i++) {
+                if (finalPoints[i] > maxEnemyFinal) maxEnemyFinal = finalPoints[i];
+            }
+
+            const winning = finalPoints[1] > maxEnemyFinal;
+
+            return { config, positions, pointsPerMinute: ppm, finalPoints, winning, teamCount };
+        }
+
         // ==================== Show Recommendation ====================
         function showRecommendation(strategies) {
             const rec = document.getElementById('recommendation');
+            let html = '';
 
+            // ---- Current Situation card ----
+            const cur = getCurrentScenario();
+            const curBorderColor = cur.winning ? '#00ff88' : '#ff375f';
+            const curBgColor = cur.winning ? 'rgba(0,255,136,0.06)' : 'rgba(255,55,95,0.08)';
+
+            html += `<div style="background:${curBgColor};border-left:3px solid ${curBorderColor};padding:14px;border-radius:4px;margin-bottom:15px;border:1px solid ${cur.winning ? 'rgba(0,255,136,0.2)' : 'rgba(255,55,95,0.2)'};">`;
+            html += `<div style="font-size:15px;font-weight:700;color:${curBorderColor};">${L.currentSitTitle}</div>`;
+
+            html += '<div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;">';
+
+            // My team
+            html += `<div style="background:#111827;padding:8px;border-radius:4px;border-left:2px solid #00ff88;">`;
+            html += `<strong style="color:#00ff88;">${t('myTeam')}:</strong> <span style="color:#00e5ff;font-family:Menlo,Courier New,monospace;">+${cur.pointsPerMinute[1]}/${t('min')}</span><br>`;
+            const myPos = [];
+            cur.positions.forEach((p, i) => { if (cur.config[i] === 1) myPos.push(posName(p)); });
+            html += myPos.length === 0 ? `<span style="color:#5a6577;">${L.noPositions}</span>` : `<span style="color:#8892a4;">${myPos.join(', ')}</span>`;
+            html += '</div>';
+
+            // Enemies
+            let curMaxER = 0;
+            for (let et = 2; et <= cur.teamCount; et++) { if (cur.pointsPerMinute[et] > curMaxER) curMaxER = cur.pointsPerMinute[et]; }
+            html += `<div style="background:#111827;padding:8px;border-radius:4px;border-left:2px solid #ff375f;">`;
+            html += `<strong style="color:#ff375f;">${L.enemies}:</strong> <span style="color:#00e5ff;font-family:Menlo,Courier New,monospace;">+${curMaxER}/${t('min')}</span><br>`;
+            const curEP = [];
+            cur.positions.forEach((p, i) => {
+                const tm = cur.config[i];
+                if (tm && tm !== 1) {
+                    curEP.push(`${posName(p)} <span style="color:#5a6577;">(+${getPositionRate(p)}/${t('min')})</span>`);
+                }
+            });
+            html += curEP.length === 0 ? `<span style="color:#5a6577;">${L.noPositions}</span>` : `<span style="color:#8892a4;">${curEP.join('<br>')}</span>`;
+            html += '</div></div>';
+
+            // NET
+            const curNet = cur.pointsPerMinute[1] - curMaxER;
+            html += `<div style="margin-top:10px;padding:8px;background:#111827;border-radius:4px;font-size:13px;color:#8892a4;font-family:Menlo,Courier New,monospace;">`;
+            html += `NET: <strong style="color:#00e5ff;">${curNet >= 0 ? '+' : ''}${curNet}/${t('min')}</strong></div>`;
+
+            // Final scores
+            let curScoresHtml = '';
+            for (let tm = 1; tm <= cur.teamCount; tm++) {
+                const fp = Math.floor(cur.finalPoints[tm] || 0).toLocaleString();
+                const color = tm === 1 ? '#00ff88' : '#ff375f';
+                const name = tm === 1 ? t('myTeam') : `${t('teamN')} ${tm}`;
+                curScoresHtml += `<div style="display:inline-block;margin-right:15px;"><span style="color:#5a6577;">${name}:</span> <strong style="color:${color};">${fp}</strong></div>`;
+            }
+            html += `<div style="margin-top:8px;padding:8px;background:#0a0e17;border-radius:4px;font-size:12px;font-family:Menlo,Courier New,monospace;"><div style="color:#5a6577;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">${t('finalScoreLabel')}</div>${curScoresHtml}</div>`;
+
+            html += '</div>';
+
+            // ---- Winning strategies (or noWin) ----
             if (!strategies || strategies.length === 0) {
                 const T = Math.floor(getTotalRate() * getTimeLeftMinutes()).toLocaleString();
-                rec.innerHTML = `<div style="background:rgba(255,55,95,0.08);border-left:3px solid #ff375f;padding:15px;border-radius:4px;border:1px solid rgba(255,55,95,0.2);">${L.noWin(T)}</div>`;
+                html += `<div style="background:rgba(255,55,95,0.08);border-left:3px solid #ff375f;padding:15px;border-radius:4px;border:1px solid rgba(255,55,95,0.2);">${L.noWin(T)}</div>`;
+                rec.innerHTML = html;
                 return;
             }
 
-            let html = `<div><h3 style="margin:0 0 15px;color:#00e5ff;font-size:16px;text-transform:uppercase;letter-spacing:1px;">${L.winsTitle}</h3>`;
+            html += `<div><h3 style="margin:0 0 15px;color:#00e5ff;font-size:16px;text-transform:uppercase;letter-spacing:1px;">${L.winsTitle}</h3>`;
 
             strategies.forEach((s, idx) => {
                 const diff = Math.floor(s.difference);
